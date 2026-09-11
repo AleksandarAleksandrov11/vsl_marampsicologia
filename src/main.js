@@ -58,6 +58,91 @@
     if (link) trackLead("whatsapp-" + (link.getAttribute("data-wa") || "enlace"));
   });
 
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------------------------------------------------
+     Intro de la mariposa
+     La capa se desvanece sola por CSS. Aquí solo recordamos que ya
+     se ha visto y permitimos saltarla en cuanto el usuario toca algo.
+     --------------------------------------------------------- */
+  (function () {
+    var intro = $("#intro");
+    if (!intro) return;
+
+    var root = document.documentElement;
+    var closed = false;
+
+    function close(skipped) {
+      if (closed) return;
+      closed = true;
+      if (skipped) root.classList.add("intro-skipped");
+      if (intro.parentNode) intro.parentNode.removeChild(intro);
+      window.removeEventListener("scroll", onSkip);
+      window.removeEventListener("touchstart", onSkip);
+      window.removeEventListener("keydown", onSkip);
+      window.removeEventListener("pointerdown", onSkip);
+    }
+    function onSkip() { close(true); }
+
+    try { sessionStorage.setItem("maram-intro", "1"); } catch (e) {}
+
+    if (root.classList.contains("intro-skip")) { close(false); return; }
+
+    window.addEventListener("scroll", onSkip, { passive: true, once: true });
+    window.addEventListener("touchstart", onSkip, { passive: true, once: true });
+    window.addEventListener("pointerdown", onSkip, { once: true });
+    window.addEventListener("keydown", onSkip, { once: true });
+
+    // Red de seguridad: aunque algo falle, la capa se retira igualmente.
+    setTimeout(function () { close(false); }, 2400);
+  })();
+
+  /* ---------------------------------------------------------
+     Aparición de secciones al hacer scroll
+     --------------------------------------------------------- */
+  (function () {
+    var items = $$(".reveal");
+    if (!items.length) return;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("is-in"); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.12 });
+
+    items.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---------------------------------------------------------
+     Carrusel de reseñas: se duplica la lista para que el bucle
+     no tenga costura. Para añadir reseñas basta con escribir otro
+     <li class="quote"> en el HTML.
+     --------------------------------------------------------- */
+  (function () {
+    var track = $("#marquee-track");
+    if (!track || reduceMotion) return;
+
+    var originals = $$(".quote", track);
+    if (!originals.length) return;
+
+    originals.forEach(function (item) {
+      var copy = item.cloneNode(true);
+      copy.setAttribute("aria-hidden", "true");
+      track.appendChild(copy);
+    });
+
+    // La duración se ajusta al número de reseñas para mantener el ritmo.
+    track.style.animationDuration = (originals.length * 15) + "s";
+  })();
+
   /* ---------------------------------------------------------
      Año del footer
      --------------------------------------------------------- */
@@ -75,9 +160,6 @@
   var label = $("#progress-label");
   var TOTAL = panels.length;
   var current = 1;
-
-  var reduceMotion = window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function panelAt(step) {
     return panels.filter(function (p) { return Number(p.dataset.step) === step; })[0];

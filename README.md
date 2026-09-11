@@ -6,11 +6,13 @@ pensado para vivir en **`reserva.marampsicologia.com`**.
 
 - Sin menú, sin enlaces de salida y sin indexar: la página solo puede acabar en
   el formulario o en WhatsApp.
-- **41 KB en la primera carga** (HTML comprimido + imagen + logo). Sin frameworks
-  ni librerías: el CSS y el JavaScript van embebidos en el HTML, así que la
-  página se pinta con una única petición.
+- **44 KB en la primera carga** (HTML comprimido + imagen del hero + logo). Las
+  cinco fotos restantes se cargan solo al llegar a ellas. Sin frameworks ni
+  librerías: el CSS y el JavaScript van embebidos en el HTML.
 - Misma identidad visual que la web principal: Playfair Display + Inter, tinta
-  `#1A1A1A`, crema `#F7F5F3`, logo y fotografía reales de la marca.
+  `#1A1A1A`, crema `#F7F5F3`, logo y fotografías reales de la marca.
+- Animada: entrada con la mariposa del logo, apariciones al hacer scroll,
+  recorrido de pasos con foto y carrusel de reseñas en movimiento continuo.
 
 ---
 
@@ -215,7 +217,7 @@ vercel dev
 src/index.html      Contenido y estructura de la página
 src/styles.css      Sistema de diseño (colores, tipografía, componentes)
 src/main.js         Formulario multi-paso, WhatsApp y eventos del píxel
-src/assets/         Imágenes optimizadas en WebP y favicons
+src/assets/         Imágenes optimizadas en WebP (hero, pasos, retratos) y favicons
 api/lead.js         Función serverless que recibe y reparte el lead
 scripts/build.mjs   Copia src/ a dist/, embebe CSS y JS e inyecta variables
 vercel.json         Build, cabeceras de caché y seguridad, X-Robots-Tag
@@ -226,7 +228,68 @@ espaciados**, las variables están al principio de `src/styles.css`.
 
 ---
 
-## 6. Decisiones que conviene conocer
+## 6. Animaciones y contenido visual
+
+### La mariposa de entrada
+
+Al abrir la página, la mariposa del logo entra volando con las alas batiendo,
+se posa en el centro junto al wordmark y la capa se desvanece dejando ver el
+hero. Dura **1,6 segundos**.
+
+- Se puede saltar: cualquier toque, clic, tecla o scroll la retira al instante.
+- Solo aparece **una vez por sesión**. Si la persona recarga o vuelve, entra
+  directa al contenido.
+- Se desvanece con una animación CSS de tipo `forwards`, así que la página
+  queda visible **aunque el JavaScript falle o no llegue a cargar**.
+- Con `prefers-reduced-motion` activado no se muestra.
+
+La mariposa es un SVG dibujado a medida (unos 700 bytes) siguiendo el trazo del
+logo. Está en `src/index.html`, dentro de `<div class="intro">`.
+
+**Para cambiar su duración:** ajusta `--intro-delay` en `src/styles.css` y el
+retardo de `animation: introOut … 1.55s` en la regla `.intro`. Ambos valores
+deben moverse juntos.
+
+### Fotos de la página
+
+| Dónde | Imagen | Origen |
+|---|---|---|
+| Hero | Escritorio con luz cálida | `hero-maram.webp` de la web principal |
+| Paso 1 · Reservas | Portátil sobre el escritorio | recorte de la misma foto |
+| Paso 2 · Hablas | María Trinidad y Lucía Zazo | `team-equipo.jpg` |
+| Paso 3 · Avanzas | Sala luminosa con sillón | `hero-consultation.jpg` |
+| Quién te acompaña | Retratos individuales | `team-maria-trinidad.webp`, `team-lucia.webp` |
+
+Todas se han recortado y recomprimido a WebP desde el repositorio de la web
+principal. Para sustituir cualquiera, deja el archivo en `src/assets/` con el
+mismo nombre y vuelve a desplegar.
+
+### Carrusel de reseñas
+
+Se desplaza solo hacia la izquierda en bucle continuo y **se detiene al pasar
+el ratón por encima o al enfocarlo con el teclado**. El JavaScript duplica las
+tarjetas para que el bucle no tenga costura y ajusta la velocidad al número de
+reseñas, de modo que no hay nada que tocar al añadir más.
+
+**Para añadir una reseña**, copia un bloque más dentro de `<ul id="marquee-track">`
+en `src/index.html`:
+
+```html
+<li class="quote">
+  <p class="quote__text">Texto literal de la reseña.</p>
+  <p class="quote__author">Iniciales<span>Tipo de terapia</span></p>
+</li>
+```
+
+> **Ahora mismo hay tres reseñas: las tres reales que nos pasaste.** No he
+> inventado más para rellenar el carrusel. Atribuir testimonios inventados a
+> pacientes sería publicidad engañosa y, en el caso de un servicio sanitario en
+> España, está expresamente restringido. En cuanto tengáis más reseñas reales,
+> se pegan en ese bloque y el carrusel se adapta solo.
+
+---
+
+## 7. Decisiones que conviene conocer
 
 - **El botón de WhatsApp nunca depende del backend.** Los enlaces `wa.me` se
   construyen en el navegador. Aunque la función serverless falle, se caiga
@@ -240,5 +303,10 @@ espaciados**, las variables están al principio de `src/styles.css`.
 - **Accesibilidad:** el formulario se maneja entero con teclado (Enter avanza de
   paso), los errores se anuncian con `role="alert"`, cada paso mueve el foco al
   campo correspondiente y todos los contrastes cumplen WCAG AA como mínimo.
+  Con `prefers-reduced-motion` no hay mariposa, ni apariciones, ni carrusel en
+  movimiento: el contenido se muestra directamente.
+- **La barra fija de móvil lleva los dos caminos:** reservar y WhatsApp, uno al
+  lado del otro. Mientras esa barra está a la vista, la burbuja flotante se
+  esconde para no duplicar el mismo botón.
 - **Validación del teléfono:** 9 dígitos que empiezan por 6, 7, 8 o 9, con el
   prefijo +34 fijo. Se valida en el navegador y otra vez en el servidor.
