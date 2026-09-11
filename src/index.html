@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- Página de campaña: tráfico de pago exclusivamente. No debe indexarse. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+
+<title>Reserva tu primera sesión | MARAM Psicología</title>
+<meta name="description" content="Terapia psicológica online con psicólogas sanitarias colegiadas. Primera sesión 45€ (60 min). Reserva en menos de un minuto.">
+<meta name="theme-color" content="#1A1A1A">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="/assets/hero-mobile.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/hero-desktop.webp" media="(min-width: 768px)" fetchpriority="high">
+
+<!-- Fuentes de marca: no bloquean el primer render (swap + carga diferida) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap"></noscript>
+
+<!--CSS-->
+
+<script>
+  window.MARAM = {
+    pixelId: "{{META_PIXEL_ID}}",
+    phone: "{{WHATSAPP_PHONE}}",
+    leadEndpoint: "/api/lead"
+  };
+</script>
+<!--PIXEL-->
+</head>
+
+<body>
+
+<a class="skip-link" href="#formulario">Ir al formulario de reserva</a>
+
+<!-- ============ CABECERA MÍNIMA (sin menú, sin enlaces de salida) ============ -->
+<header class="header">
+  <div class="wrap header__inner">
+    <img class="header__logo" src="/assets/logo-maram.webp" width="351" height="96"
+         alt="MARAM Psicología" decoding="async">
+    <span class="header__tag">Psicología sanitaria online</span>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ============ 1. HERO ============ -->
+  <section class="hero" id="hero">
+    <picture class="hero__media">
+      <source media="(max-width: 767px)" srcset="/assets/hero-mobile.webp" width="720" height="920">
+      <img src="/assets/hero-desktop.webp" width="1080" height="734" alt="" aria-hidden="true"
+           fetchpriority="high" decoding="async">
+    </picture>
+
+    <div class="wrap hero__inner">
+      <p class="eyebrow">Terapia online · Psicólogas sanitarias colegiadas</p>
+
+      <h1 class="hero__title">No tienes que poder con todo tú&nbsp;solo/a</h1>
+
+      <p class="hero__sub">
+        Un espacio seguro para hablar de lo que te pesa, sin juicios y a tu ritmo.
+        Empieza hoy, desde donde estés.
+      </p>
+
+      <a class="btn btn--primary btn--lg js-cta" href="#formulario" data-cta="hero">
+        Reservar mi primera sesión
+      </a>
+
+      <p class="hero__price">Primera sesión <strong>45&nbsp;€</strong> · 60 minutos</p>
+
+      <p class="trustline">
+        <span>Psicólogas sanitarias colegiadas</span>
+        <span>100&nbsp;% online</span>
+        <span>Totalmente confidencial</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 2. ¿TE SIENTES ASÍ? ============ -->
+  <section class="section" aria-labelledby="empatia-titulo">
+    <div class="wrap wrap--narrow">
+      <h2 class="h2" id="empatia-titulo">¿Te sientes así últimamente?</h2>
+      <p class="section__lead">
+        No hace falta estar en tu peor momento para pedir ayuda. A veces basta con reconocerse
+        en alguna de estas frases.
+      </p>
+
+      <ul class="checklist">
+        <li>Te levantas con una inquietud en el pecho que no sabes explicar.</li>
+        <li>Te exiges muchísimo y, aun así, sientes que nunca es suficiente.</li>
+        <li>Te sobrepasan emociones que antes gestionabas sin problema.</li>
+        <li>Estás agotado/a de aparentar que todo va bien.</li>
+        <li>En tus relaciones se repiten las mismas discusiones o el mismo silencio.</li>
+        <li>Sabes que algo tiene que cambiar, pero no sabes por dónde empezar.</li>
+      </ul>
+
+      <p class="bridge">
+        Si te has reconocido en alguna, no estás exagerando ni te pasa solo a ti.
+        Son señales de que algo dentro necesita ser escuchado. Y eso se puede trabajar.
+      </p>
+
+      <div class="center">
+        <a class="btn btn--primary js-cta" href="#formulario" data-cta="empatia">
+          Quiero empezar a sentirme mejor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. CÓMO FUNCIONA ============ -->
+  <section class="section section--cream" aria-labelledby="pasos-titulo">
+    <div class="wrap">
+      <h2 class="h2 center" id="pasos-titulo">Empezar es más sencillo de lo que parece</h2>
+      <p class="section__lead center">Tres pasos y una primera conversación. Nada más.</p>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num" aria-hidden="true">1</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+              <path d="M8 3v4M16 3v4M3 11h18"></path><path d="M9 16l2 2 4-4"></path>
+            </svg>
+          </span>
+          <h3 class="step__title">Reservas tu primera sesión</h3>
+          <p class="step__text">
+            Rellenas el formulario en menos de un minuto y te escribimos para encontrar
+            el horario que mejor te venga. <strong>45&nbsp;€, 60 minutos.</strong>
+          </p>
+        </li>
+
+        <li class="step">
+          <span class="step__num" aria-hidden="true">2</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="6" width="13" height="12" rx="2"></rect>
+              <path d="M15 10.5l6-3.5v10l-6-3.5z"></path>
+            </svg>
+          </span>
+          <h3 class="step__title">Hablas por videollamada</h3>
+          <p class="step__text">
+            Te acompaña una psicóloga sanitaria colegiada desde donde tú estés.
+            Solo necesitas un móvil u ordenador y un rato tranquilo.
+          </p>
+        </li>
+
+        <li class="step">
+          <span class="step__num" aria-hidden="true">3</span>
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21c0-5 2.5-8.5 7-10-.5 5-3 8.5-7 10z"></path>
+              <path d="M12 21c0-4.5-2-7.5-6-9 .4 4.5 2.6 7.6 6 9z"></path>
+              <path d="M12 21v-7"></path>
+            </svg>
+          </span>
+          <h3 class="step__title">Avanzas a tu ritmo</h3>
+          <p class="step__text">
+            Sin desplazamientos y sin compromisos de permanencia. Decides tú la frecuencia.
+            Sesiones siguientes: <strong>60&nbsp;€, 60 minutos.</strong>
+          </p>
+        </li>
+      </ol>
+
+      <div class="center">
+        <a class="btn btn--primary js-cta" href="#formulario" data-cta="pasos">
+          Reservar mi primera sesión
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. POR QUÉ MARAM ============ -->
+  <section class="section" aria-labelledby="porque-titulo">
+    <div class="wrap">
+      <h2 class="h2 center" id="porque-titulo">Por qué MARAM</h2>
+      <p class="section__lead center">
+        Psicología clínica seria, con el trato cercano que necesitas para poder abrirte.
+      </p>
+
+      <ul class="cards">
+        <li class="card">
+          <h3 class="card__title">Profesionalidad acreditada</h3>
+          <p class="card__text">
+            Te atienden psicólogas sanitarias colegiadas: María Trinidad (Nº Col. M-44056)
+            y Lucía Zazo (Nº Col. M-44057), con formación especializada y actualización continua.
+          </p>
+        </li>
+        <li class="card">
+          <h3 class="card__title">Empatía y escucha activa</h3>
+          <p class="card__text">
+            Sin juicios, sin consejos de manual y sin prisa. Acompañamos respetando tu ritmo,
+            tu historia y tus objetivos.
+          </p>
+        </li>
+        <li class="card">
+          <h3 class="card__title">Confidencialidad total</h3>
+          <p class="card__text">
+            Lo que compartes en sesión se queda en sesión. Secreto profesional y tratamiento
+            de datos conforme al RGPD.
+          </p>
+        </li>
+        <li class="card">
+          <h3 class="card__title">100 % online</h3>
+          <p class="card__text">
+            Desde casa, desde el trabajo o de viaje. La misma calidad terapéutica,
+            sin desplazamientos ni salas de espera.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 5. TESTIMONIOS ============ -->
+  <section class="section section--cream" aria-labelledby="testimonios-titulo">
+    <div class="wrap">
+      <h2 class="h2 center" id="testimonios-titulo">Lo que cuentan quienes ya dieron el paso</h2>
+
+      <ul class="quotes">
+        <li class="quote">
+          <blockquote>
+            <p>Encontré un espacio donde por fin pude expresarme sin miedo. Ha sido un antes y un después en mi vida.</p>
+          </blockquote>
+          <p class="quote__author">M.L.<span>Paciente de terapia individual</span></p>
+        </li>
+        <li class="quote">
+          <blockquote>
+            <p>La terapia online me permitió continuar mi proceso desde cualquier lugar. La calidad es exactamente la misma.</p>
+          </blockquote>
+          <p class="quote__author">A.G.<span>Paciente de terapia online</span></p>
+        </li>
+        <li class="quote">
+          <blockquote>
+            <p>Gracias a la terapia de pareja hemos aprendido a comunicarnos de una forma completamente nueva.</p>
+          </blockquote>
+          <p class="quote__author">R.M. &amp; J.P.<span>Pacientes de terapia de pareja</span></p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 6. CTA FINAL + FORMULARIO ============ -->
+  <section class="section section--dark" id="formulario" aria-labelledby="form-titulo">
+    <div class="wrap wrap--narrow">
+      <h2 class="h2 h2--light center" id="form-titulo">
+        Lo difícil es dar el primer paso.<br>Y ya lo estás dando.
+      </h2>
+      <p class="section__lead section__lead--light center">
+        Déjanos tus datos y te contactamos en menos de 24&nbsp;horas para proponerte horario.
+        Sin compromiso.
+      </p>
+
+      <div class="formcard">
+
+        <!-- ---------- Formulario multi-paso ---------- -->
+        <form class="mstep" id="lead-form" novalidate>
+
+          <!-- Campo trampa anti-spam: invisible y fuera del foco para personas -->
+          <div class="hp" aria-hidden="true">
+            <label for="web">No rellenes este campo</label>
+            <input type="text" id="web" name="web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="progress" role="group" aria-label="Progreso del formulario">
+            <div class="progress__bar"><span class="progress__fill" id="progress-fill"></span></div>
+            <ol class="progress__dots" id="progress-dots">
+              <li class="dot is-active" data-step="1"><span class="sr-only">Paso 1: Nombre</span></li>
+              <li class="dot" data-step="2"><span class="sr-only">Paso 2: Teléfono</span></li>
+              <li class="dot" data-step="3"><span class="sr-only">Paso 3: Motivo</span></li>
+            </ol>
+            <p class="progress__label" id="progress-label" aria-live="polite">Paso 1 de 3</p>
+          </div>
+
+          <!-- Paso 1 -->
+          <fieldset class="panel is-current" data-step="1">
+            <legend class="panel__q"><label for="nombre">¿Cómo te llamas?</label></legend>
+            <p class="panel__help" id="nombre-help">Solo el nombre, para saber cómo dirigirnos a ti.</p>
+            <input class="field" type="text" id="nombre" name="nombre" autocomplete="given-name"
+                   enterkeyhint="next" maxlength="60" placeholder="Tu nombre"
+                   aria-describedby="nombre-help nombre-error" required>
+            <p class="field__error" id="nombre-error" role="alert"></p>
+            <div class="panel__nav">
+              <button class="btn btn--primary btn--block js-next" type="button">Continuar</button>
+            </div>
+          </fieldset>
+
+          <!-- Paso 2 -->
+          <fieldset class="panel" data-step="2" hidden>
+            <legend class="panel__q"><label for="telefono">¿A qué teléfono te escribimos?</label></legend>
+            <p class="panel__help" id="telefono-help">
+              Te contactamos por WhatsApp o llamada, siempre en horario de Lun&nbsp;a&nbsp;Vie de 9:00 a 20:00.
+            </p>
+            <div class="field-phone">
+              <span class="field-phone__prefix" aria-hidden="true">+34</span>
+              <input class="field field--phone" type="tel" id="telefono" name="telefono"
+                     autocomplete="tel-national" inputmode="numeric" enterkeyhint="next"
+                     maxlength="11" placeholder="612 345 678"
+                     aria-describedby="telefono-help telefono-error" required>
+            </div>
+            <p class="field__error" id="telefono-error" role="alert"></p>
+            <div class="panel__nav">
+              <button class="btn btn--ghost js-back" type="button">Atrás</button>
+              <button class="btn btn--primary js-next" type="button">Continuar</button>
+            </div>
+          </fieldset>
+
+          <!-- Paso 3 -->
+          <fieldset class="panel" data-step="3" hidden>
+            <legend class="panel__q"><label for="motivo">¿Qué te está pasando ahora mismo?</label></legend>
+            <p class="panel__help" id="motivo-help">
+              No hace falta que lo tengas claro ni que te extiendas. Unas líneas nos ayudan a
+              asignarte la psicóloga que mejor encaja contigo.
+            </p>
+            <textarea class="field field--area" id="motivo" name="motivo" rows="4" maxlength="500"
+                      enterkeyhint="send" placeholder="Cuéntanos brevemente qué te gustaría trabajar…"
+                      aria-describedby="motivo-help"></textarea>
+            <div class="panel__nav">
+              <button class="btn btn--ghost js-back" type="button">Atrás</button>
+              <button class="btn btn--primary js-submit" type="submit">Enviar y reservar</button>
+            </div>
+            <p class="legal">
+              Al enviar aceptas que MARAM Psicología trate tus datos para contactarte.
+              Confidencialidad garantizada. Puedes pedir su supresión cuando quieras.
+            </p>
+          </fieldset>
+
+        </form>
+
+        <!-- ---------- Pantalla de agradecimiento ---------- -->
+        <div class="thanks" id="thanks" hidden tabindex="-1" role="status" aria-live="polite">
+          <span class="thanks__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path>
+            </svg>
+          </span>
+          <h3 class="thanks__title" id="thanks-title">Gracias, <span id="thanks-name">gracias</span>.</h3>
+          <p class="thanks__text">
+            Hemos recibido tu solicitud. <strong>Te contactamos en menos de 24&nbsp;horas</strong>
+            (Lun&nbsp;a&nbsp;Vie, de 9:00 a 20:00) para proponerte horario para tu primera sesión.
+          </p>
+          <p class="thanks__text thanks__text--muted">
+            ¿Prefieres que hablemos ya? Escríbenos y te respondemos en cuanto estemos disponibles.
+          </p>
+          <a class="btn btn--whatsapp btn--block js-wa" id="wa-thanks" href="#" target="_blank" rel="noopener"
+             data-wa="gracias">
+            <svg class="btn__ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.21-8.24 8.21zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.53.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"></path>
+            </svg>
+            Hablar por WhatsApp
+          </a>
+        </div>
+
+        <!-- ---------- Alternativa secundaria, siempre visible ---------- -->
+        <p class="alt-wa">
+          ¿Prefieres escribirnos directamente?
+          <a class="alt-wa__link js-wa" id="wa-alt" href="#" target="_blank" rel="noopener" data-wa="alternativa">
+            Escríbenos por WhatsApp
+          </a>
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER MÍNIMO ============ -->
+<footer class="footer">
+  <div class="wrap wrap--narrow footer__inner">
+    <img class="footer__logo" src="/assets/logo-maram.webp" width="351" height="96"
+         alt="MARAM Psicología" loading="lazy" decoding="async">
+
+    <ul class="footer__data">
+      <li><a href="tel:+34698994566">+34 698 994 566</a> · Lun a Vie, 9:00–20:00</li>
+      <li><a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a></li>
+      <li>María Trinidad — Psicóloga sanitaria, Nº Col. M-44056</li>
+      <li>Lucía Zazo — Psicóloga sanitaria, Nº Col. M-44057</li>
+    </ul>
+
+    <p class="footer__legal">
+      Tus datos se tratan únicamente para gestionar tu solicitud de cita y nunca se ceden a terceros.
+      Responsable: MARAM Psicología Clínica.
+    </p>
+
+    <details class="footer__privacy">
+      <summary>Aviso de privacidad</summary>
+      <p>
+        <strong>Responsable:</strong> MARAM Psicología Clínica.
+        <strong>Finalidad:</strong> atender tu solicitud de primera sesión y contactarte por
+        teléfono, WhatsApp o email. <strong>Legitimación:</strong> tu consentimiento al enviar
+        el formulario. <strong>Conservación:</strong> mientras dure la relación o hasta que
+        solicites la supresión. <strong>Destinatarios:</strong> no se ceden datos a terceros
+        salvo obligación legal. <strong>Derechos:</strong> acceso, rectificación, supresión,
+        oposición, limitación y portabilidad escribiendo a maram@marampsicologia.com.
+      </p>
+    </details>
+
+    <p class="footer__copy">© <span id="year">2026</span> MARAM Psicología Clínica</p>
+  </div>
+</footer>
+
+<!-- ============ ELEMENTOS PERSISTENTES ============ -->
+
+<!-- Burbuja flotante de WhatsApp -->
+<a class="wa-float js-wa" id="wa-float" href="#" target="_blank" rel="noopener" data-wa="burbuja"
+   aria-label="Escribirnos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.21-8.24 8.21zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.53.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"></path>
+  </svg>
+</a>
+
+<!-- Barra fija móvil -->
+<div class="stickybar" id="stickybar" hidden>
+  <a class="btn btn--primary btn--block js-cta" href="#formulario" data-cta="barra-movil">
+    Reservar mi primera sesión
+  </a>
+</div>
+
+<!--JS-->
+</body>
+</html>
