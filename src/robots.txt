@@ -1,0 +1,3 @@
+# Landing de campaña de pago. No debe indexarse en ningún buscador.
+User-agent: *
+Disallow: /
