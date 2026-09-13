@@ -314,13 +314,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .section--cream .step__badge { box-shadow: 0 0 0 6px var(--cream); }
 
 .step__media { margin: 0 0 1.125rem; overflow: hidden; border-radius: var(--radius); }
-.step__media img {
-  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
-  transition: transform 1.1s var(--out);
-}
+.step__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 /* Encuadre alto: cabe entero el retrato de las dos psicólogas */
-.step__media--tall img { aspect-ratio: 1 / 1; }
-.step:hover .step__media img { transform: scale(1.04); }
+/* Encuadre vertical: el retrato de las dos entra completo, sin recortes */
+.step__media--tall img { aspect-ratio: 3 / 4; }
 
 .step__title { font-size: 1.375rem; margin-bottom: .375rem; }
 .step__text { font-size: 1rem; color: var(--muted); line-height: 1.55; }
