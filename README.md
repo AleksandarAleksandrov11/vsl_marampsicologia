@@ -23,17 +23,21 @@ pensado para vivir en **`reserva.marampsicologia.com`**.
 Todas se configuran en **Vercel → Settings → Environment Variables**. Copia
 `.env.example` a `.env.local` si quieres trabajar en local.
 
-### Obligatoria para medir
+### Medición: nada que configurar
 
-| Variable | Qué es | Ejemplo |
+El píxel `28380442211594328` y el teléfono `+34 698 994 566` **van por defecto en
+el código**, así que cualquier despliegue sale ya midiendo sin tocar nada en
+Vercel. Solo necesitas estas variables si algún día quieres cambiarlos:
+
+| Variable | Qué es | Por defecto |
 |---|---|---|
-| `META_PIXEL_ID` | ID del Píxel de Meta. Se inyecta en el HTML durante el build. | `28380442211594328` |
+| `META_PIXEL_ID` | Otro Píxel de Meta distinto. | `28380442211594328` |
+| `WHATSAPP_PHONE` | Otro número de WhatsApp, solo dígitos. | `34698994566` |
 
 > El píxel se instala con el **snippet oficial de Meta en la cabecera**, así que
 > Events Manager y la extensión Pixel Helper lo detectan al cargar la página.
 > Quien rechace las cookies de medición pasa a `consent revoke` y deja de enviar
 > datos; al volver a entrar, la revocación se aplica antes del `PageView`.
-> Si dejas la variable vacía no se inyecta nada.
 
 ### Recepción de leads — opción A: email (recomendada)
 
@@ -56,12 +60,6 @@ ninguna, la landing sigue funcionando: el formulario muestra la pantalla de
 agradecimiento, el botón de WhatsApp funciona y el lead queda registrado en los
 logs de Vercel.
 
-### Otras
-
-| Variable | Por defecto | Qué es |
-|---|---|---|
-| `WHATSAPP_PHONE` | `34698994566` | Teléfono de WhatsApp, solo dígitos, con prefijo de país. |
-
 ---
 
 ## 2. Publicar en `reserva.marampsicologia.com`
@@ -79,8 +77,9 @@ rama que quieres publicar es la que Vercel va a seguir.
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
    - **Install Command:** déjalo vacío (no hay dependencias)
-3. **Antes de pulsar Deploy**, despliega *Environment Variables* y añade al
-   menos `META_PIXEL_ID`. Las demás puedes añadirlas después.
+3. No hace falta configurar ninguna variable para desplegar: el píxel y el
+   teléfono van en el código. Las de recepción de leads (sección 3) puedes
+   añadirlas después.
 4. Pulsa **Deploy**. En un minuto tendrás una URL tipo
    `vsl-marampsicologia.vercel.app` para revisar que todo está bien.
 

@@ -14,8 +14,14 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = path.join(ROOT, "src");
 const DIST = path.join(ROOT, "dist");
 
-const PIXEL_ID = (process.env.META_PIXEL_ID || "").trim();
-const PHONE = (process.env.WHATSAPP_PHONE || "34698994566").replace(/\D/g, "");
+/* Valores de MARAM por defecto. La variable de entorno solo hace falta para
+   cambiarlos; sin ella el despliegue sale ya con el píxel y el teléfono
+   correctos, sin depender de que estén configurados en Vercel. */
+const DEFAULT_PIXEL_ID = "28380442211594328";
+const DEFAULT_PHONE = "34698994566";
+
+const PIXEL_ID = (process.env.META_PIXEL_ID || DEFAULT_PIXEL_ID).trim();
+const PHONE = (process.env.WHATSAPP_PHONE || DEFAULT_PHONE).replace(/\D/g, "");
 
 /**
  * Snippet oficial de Meta, tal cual lo entrega Events Manager, para que el
@@ -96,7 +102,8 @@ async function build() {
 
   const kb = (Buffer.byteLength(out) / 1024).toFixed(1);
   console.log(`✓ dist/index.html  ${kb} KB (CSS y JS embebidos)`);
-  console.log(`  Meta Pixel: ${PIXEL_ID ? PIXEL_ID + " (en la cabecera, PageView al cargar)" : "NO configurado (define META_PIXEL_ID)"}`);
+  const origen = process.env.META_PIXEL_ID ? "META_PIXEL_ID" : "valor por defecto";
+  console.log(`  Meta Pixel: ${PIXEL_ID} (${origen}) — en la cabecera, PageView al cargar`);
   console.log(`  WhatsApp:   +${PHONE}`);
 }
 
