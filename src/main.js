@@ -17,9 +17,41 @@
   };
 
   /* ---------------------------------------------------------
-     Meta Pixel: un único evento Lead por visita, con eventID
-     para poder deduplicar más adelante contra la API de Conversiones.
+     Píxel de Meta
+     No se carga con la página: solo si la persona acepta las cookies
+     de medición. Sin consentimiento, la landing funciona igual.
      --------------------------------------------------------- */
+  var CONSENT_KEY = CFG.consentKey || "maram_cookie_consent";
+  var pixelLoaded = false;
+
+  function readConsent() {
+    try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; }
+  }
+  function writeConsent(value) {
+    try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
+  }
+
+  function loadPixel() {
+    var id = CFG.pixelId;
+    if (pixelLoaded || !id || typeof window.fbq === "function") return;
+    pixelLoaded = true;
+
+    /* Snippet oficial de Meta */
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0";
+      n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+    window.fbq("init", id);
+    window.fbq("track", "PageView");
+  }
+
+  /* Un único evento Lead por visita, con eventID para poder deduplicar
+     más adelante contra la API de Conversiones. */
   var leadFired = false;
   var eventId = "maram-" + Date.now().toString(36) + "-" +
                 Math.random().toString(36).slice(2, 10);
@@ -139,9 +171,88 @@
       track.appendChild(copy);
     });
 
-    // La duración se ajusta al número de reseñas para mantener el ritmo.
-    track.style.animationDuration = (originals.length * 15) + "s";
+    // Ritmo constante sea cual sea el número de reseñas: al llegar al final
+    // la pista ya está en la copia, así que el bucle vuelve a la primera
+    // sin salto visible.
+    track.style.animationDuration = Math.round(originals.length * 6.5) + "s";
   })();
+
+  /* ---------------------------------------------------------
+     Consentimiento de cookies
+     --------------------------------------------------------- */
+  (function () {
+    var bar = $("#cookiebar");
+    var decision = readConsent();
+
+    if (decision === "accepted") loadPixel();
+
+    function settle(value) {
+      writeConsent(value);
+      if (value === "accepted") loadPixel();
+      if (bar) bar.hidden = true;
+      document.body.classList.remove("cookies-pending");
+    }
+
+    function openBanner() {
+      if (!bar) return;
+      bar.hidden = false;
+      document.body.classList.add("cookies-pending");
+    }
+
+    if (!decision) {
+      // Se espera a que la mariposa deje paso: el banner no debe aparecer
+      // por debajo de la animación de entrada.
+      var introVivo = $("#intro") &&
+        !document.documentElement.classList.contains("intro-skip");
+      if (introVivo) setTimeout(openBanner, 2200);
+      else openBanner();
+    }
+
+    $$("#cookie-accept, .js-cookie-accept").forEach(function (b) {
+      b.addEventListener("click", function () { settle("accepted"); closeModals(); });
+    });
+    $$("#cookie-reject, .js-cookie-reject").forEach(function (b) {
+      b.addEventListener("click", function () { settle("rejected"); closeModals(); });
+    });
+    $$(".js-cookie-settings").forEach(function (b) {
+      b.addEventListener("click", function () { openModal("modal-cookies"); });
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     Ventanas legales (aviso, privacidad, cookies)
+     Se abren sobre la propia página: no hay enlaces de salida.
+     --------------------------------------------------------- */
+  function openModal(id) {
+    var dlg = document.getElementById(id);
+    if (!dlg) return;
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+  }
+
+  function closeModals() {
+    $$(".modal").forEach(function (dlg) {
+      if (typeof dlg.close === "function" && dlg.open) dlg.close();
+      else dlg.removeAttribute("open");
+    });
+  }
+
+  $$(".js-modal").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      openModal(btn.getAttribute("data-modal"));
+    });
+  });
+
+  $$(".js-modal-close").forEach(function (btn) {
+    btn.addEventListener("click", closeModals);
+  });
+
+  // Clic en el fondo oscuro: cerrar
+  $$(".modal").forEach(function (dlg) {
+    dlg.addEventListener("click", function (ev) {
+      if (ev.target === dlg) closeModals();
+    });
+  });
 
   /* ---------------------------------------------------------
      Año del footer
