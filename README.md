@@ -29,10 +29,11 @@ Todas se configuran en **Vercel → Settings → Environment Variables**. Copia
 |---|---|---|
 | `META_PIXEL_ID` | ID del Píxel de Meta. Se inyecta en el HTML durante el build. | `28380442211594328` |
 
-> **El píxel no se carga con la página.** Solo se activa si la persona pulsa
-> «Aceptar todas» en el banner de cookies, como exige el RGPD. Si rechaza, la
-> landing funciona exactamente igual: puede reservar y escribir por WhatsApp,
-> simplemente no se mide. Si dejas la variable vacía tampoco se carga nada.
+> El píxel se instala con el **snippet oficial de Meta en la cabecera**, así que
+> Events Manager y la extensión Pixel Helper lo detectan al cargar la página.
+> Quien rechace las cookies de medición pasa a `consent revoke` y deja de enviar
+> datos; al volver a entrar, la revocación se aplica antes del `PageView`.
+> Si dejas la variable vacía no se inyecta nada.
 
 ### Recepción de leads — opción A: email (recomendada)
 
@@ -179,8 +180,9 @@ directamente por WhatsApp.
 
 | Evento | Cuándo se dispara |
 |---|---|
-| `PageView` | Al aceptar las cookies de medición (no antes). |
+| `PageView` | Al cargar la página, desde el snippet de la cabecera. |
 | `Lead` | Al enviar el formulario **o** al pulsar cualquier botón de WhatsApp. |
+| `consent` | `grant` o `revoke` según lo que se elija en el banner de cookies. |
 
 El evento `Lead` se envía **una sola vez por visita** para no inflar las
 métricas, con `value: 45` y `currency: EUR`, e incluye un `eventID` por si más
@@ -189,15 +191,25 @@ adelante queréis deduplicar contra la API de Conversiones.
 Para optimizar la campaña en Meta: **Events Manager → Custom Conversions**, o
 directamente el objetivo *Clientes potenciales* usando el evento `Lead`.
 
-> **El píxel espera al consentimiento.** No se carga nada de Meta hasta que la
-> persona pulsa «Aceptar todas» en el banner de cookies. Eso significa que en
-> Events Manager verás menos tráfico del que realmente entra: solo el de quien
-> acepta. Es lo que exige el RGPD y lo que hace también la web principal.
+**Cómo comprobarlo:** abre la landing con la extensión *Meta Pixel Helper*.
+Debe aparecer el píxel `28380442211594328` con un `PageView`. Rellena el
+formulario y verás el `Lead`.
+
+> **Sobre el consentimiento.** El píxel carga y envía el `PageView` nada más
+> entrar, igual que en `marampsicologia.com`. El banner de cookies sirve para
+> que quien no quiera ser medido pueda cortarlo: al pulsar «Solo necesarias» se
+> envía `fbq('consent', 'revoke')` y, en visitas posteriores, esa revocación se
+> aplica antes de cualquier evento.
 >
-> Si más adelante queréis recuperar parte de esa medición, el camino es la **API
-> de Conversiones** de Meta enviando los eventos desde `api/lead.js`. El
-> `eventId` que ya se genera está pensado justo para eso: permite deduplicar el
-> evento del navegador y el del servidor.
+> Una lectura estricta del RGPD pediría no enviar nada antes de la aceptación.
+> Como este es el mismo criterio que ya sigue la web principal, lo he dejado
+> así; si vuestro asesor legal prefiere lo contrario, se cambia moviendo la
+> llamada `fbq('track', 'PageView')` del snippet en `scripts/build.mjs` al
+> momento de aceptar.
+>
+> Si más adelante queréis medición independiente del navegador, el camino es la
+> **API de Conversiones** enviando los eventos desde `api/lead.js`. El `eventId`
+> que ya se genera permite deduplicar el evento del navegador y el del servidor.
 
 ---
 
@@ -266,9 +278,14 @@ deben moverse juntos.
 | Paso 3 · Avanzas | Sala luminosa con sillón | `hero-consultation.jpg` |
 | Quién te acompaña | Retratos individuales | `team-maria-trinidad.webp`, `team-lucia.webp` |
 
-Todas se han recortado y recomprimido a WebP desde el repositorio de la web
-principal. Para sustituir cualquiera, deja el archivo en `src/assets/` con el
-mismo nombre y vuelve a desplegar.
+**Las ocho imágenes de la página están en WebP**, recortadas y recomprimidas
+desde el repositorio de la web principal. Suman 135 KB en total y solo la del
+hero se carga de entrada. Los cuatro favicons siguen en PNG e ICO a propósito:
+ningún navegador garantiza WebP para el icono de pestaña ni para el acceso
+directo de iOS.
+
+Para sustituir cualquier foto, deja el archivo en `src/assets/` con el mismo
+nombre y vuelve a desplegar.
 
 ### Carrusel de reseñas
 

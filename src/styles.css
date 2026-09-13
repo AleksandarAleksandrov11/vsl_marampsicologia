@@ -318,6 +318,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
   transition: transform 1.1s var(--out);
 }
+/* Encuadre alto: cabe entero el retrato de las dos psicólogas */
+.step__media--tall img { aspect-ratio: 1 / 1; }
 .step:hover .step__media img { transform: scale(1.04); }
 
 .step__title { font-size: 1.375rem; margin-bottom: .375rem; }

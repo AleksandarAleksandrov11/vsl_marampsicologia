@@ -22,7 +22,6 @@
      de medición. Sin consentimiento, la landing funciona igual.
      --------------------------------------------------------- */
   var CONSENT_KEY = CFG.consentKey || "maram_cookie_consent";
-  var pixelLoaded = false;
 
   function readConsent() {
     try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; }
@@ -31,23 +30,12 @@
     try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
   }
 
-  function loadPixel() {
-    var id = CFG.pixelId;
-    if (pixelLoaded || !id || typeof window.fbq === "function") return;
-    pixelLoaded = true;
-
-    /* Snippet oficial de Meta */
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0";
-      n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
-      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-
-    window.fbq("init", id);
-    window.fbq("track", "PageView");
+  /* El píxel se carga en la cabecera, con el snippet oficial de Meta, para que
+     Events Manager y el Pixel Helper lo detecten. Aquí solo se le dice si
+     puede enviar datos: quien rechaza deja de enviar desde ese mismo momento. */
+  function applyConsent(value) {
+    if (typeof window.fbq !== "function") return;
+    window.fbq("consent", value === "rejected" ? "revoke" : "grant");
   }
 
   /* Un único evento Lead por visita, con eventID para poder deduplicar
@@ -184,11 +172,11 @@
     var bar = $("#cookiebar");
     var decision = readConsent();
 
-    if (decision === "accepted") loadPixel();
+    if (decision) applyConsent(decision);
 
     function settle(value) {
       writeConsent(value);
-      if (value === "accepted") loadPixel();
+      applyConsent(value);
       if (bar) bar.hidden = true;
       document.body.classList.remove("cookies-pending");
     }

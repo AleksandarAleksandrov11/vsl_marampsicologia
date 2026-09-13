@@ -17,6 +17,32 @@ const DIST = path.join(ROOT, "dist");
 const PIXEL_ID = (process.env.META_PIXEL_ID || "").trim();
 const PHONE = (process.env.WHATSAPP_PHONE || "34698994566").replace(/\D/g, "");
 
+/**
+ * Snippet oficial de Meta, tal cual lo entrega Events Manager, para que el
+ * Pixel Helper lo detecte en el código fuente de la página.
+ *
+ * Matiz de consentimiento: quien ya haya rechazado las cookies de medición
+ * entra con `consent revoke` antes del primer evento, así que no se envía
+ * nada suyo. El banner cambia ese estado con `grant` o `revoke`.
+ */
+const pixelSnippet = (id) => `<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${id}');
+try{if(localStorage.getItem('maram_cookie_consent')==='rejected')fbq('consent','revoke');}catch(e){}
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=${id}&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->`;
+
 /** Minificado conservador: quita comentarios de línea completa e indentación. */
 function minifyCss(css) {
   return css
@@ -43,6 +69,7 @@ async function build() {
   const out = html
     .replace("<!--CSS-->", () => `<style>\n${minifyCss(css)}\n</style>`)
     .replace("<!--JS-->", () => `<script>\n${js}\n</script>`)
+    .replace("<!--PIXEL-->", () => (PIXEL_ID ? pixelSnippet(PIXEL_ID) : "<!-- Meta Pixel no configurado -->"))
     .replaceAll("{{META_PIXEL_ID}}", () => PIXEL_ID)
     .replaceAll("{{WHATSAPP_PHONE}}", () => PHONE);
 
@@ -51,6 +78,9 @@ async function build() {
 
   // El JS embebido debe ser byte a byte idéntico al de src/main.js.
   if (!out.includes(js)) throw new Error("El JS embebido no coincide con src/main.js");
+  if (PIXEL_ID && !out.includes(`fbq('init', '${PIXEL_ID}')`)) {
+    throw new Error("El snippet del Píxel de Meta no se ha inyectado en la cabecera");
+  }
   if (PIXEL_ID && !out.includes(`pixelId: "${PIXEL_ID}"`)) {
     throw new Error("El ID del Píxel de Meta no se ha inyectado en window.MARAM");
   }
@@ -66,7 +96,7 @@ async function build() {
 
   const kb = (Buffer.byteLength(out) / 1024).toFixed(1);
   console.log(`✓ dist/index.html  ${kb} KB (CSS y JS embebidos)`);
-  console.log(`  Meta Pixel: ${PIXEL_ID ? PIXEL_ID + " (se activa al aceptar cookies)" : "NO configurado (define META_PIXEL_ID)"}`);
+  console.log(`  Meta Pixel: ${PIXEL_ID ? PIXEL_ID + " (en la cabecera, PageView al cargar)" : "NO configurado (define META_PIXEL_ID)"}`);
   console.log(`  WhatsApp:   +${PHONE}`);
 }
 
