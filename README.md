@@ -13,6 +13,8 @@ pensado para vivir en **`reserva.marampsicologia.com`**.
   `#1A1A1A`, crema `#F7F5F3`, logo y fotografías reales de la marca.
 - Animada: entrada con la mariposa del logo, apariciones al hacer scroll,
   recorrido de pasos con foto y carrusel de reseñas en movimiento continuo.
+- Legal completo y sin salir de la página: banner de cookies que controla el
+  píxel, más aviso legal, privacidad y cookies en ventanas emergentes.
 
 ---
 
@@ -25,12 +27,12 @@ Todas se configuran en **Vercel → Settings → Environment Variables**. Copia
 
 | Variable | Qué es | Ejemplo |
 |---|---|---|
-| `META_PIXEL_ID` | ID del Píxel de Meta. Se inyecta en el HTML durante el build. | `1467189831426312` |
+| `META_PIXEL_ID` | ID del Píxel de Meta. Se inyecta en el HTML durante el build. | `28380442211594328` |
 
-> El píxel que ya usa `marampsicologia.com` es el `1467189831426312`. Puedes
-> reutilizarlo para tener todo el tráfico en un único píxel, o crear uno nuevo
-> en Meta Events Manager si prefieres separar las campañas de esta landing.
-> Si dejas la variable vacía la página funciona igual, pero no envía eventos.
+> **El píxel no se carga con la página.** Solo se activa si la persona pulsa
+> «Aceptar todas» en el banner de cookies, como exige el RGPD. Si rechaza, la
+> landing funciona exactamente igual: puede reservar y escribir por WhatsApp,
+> simplemente no se mide. Si dejas la variable vacía tampoco se carga nada.
 
 ### Recepción de leads — opción A: email (recomendada)
 
@@ -177,7 +179,7 @@ directamente por WhatsApp.
 
 | Evento | Cuándo se dispara |
 |---|---|
-| `PageView` | Al cargar la página. |
+| `PageView` | Al aceptar las cookies de medición (no antes). |
 | `Lead` | Al enviar el formulario **o** al pulsar cualquier botón de WhatsApp. |
 
 El evento `Lead` se envía **una sola vez por visita** para no inflar las
@@ -187,12 +189,15 @@ adelante queréis deduplicar contra la API de Conversiones.
 Para optimizar la campaña en Meta: **Events Manager → Custom Conversions**, o
 directamente el objetivo *Clientes potenciales* usando el evento `Lead`.
 
-> **Sobre el consentimiento de cookies.** El píxel se carga al entrar en la
-> página, sin banner previo. La web principal sí tiene banner de cookies, así
-> que conviene que lo valoréis con quien os lleve la parte legal: el RGPD y la
-> LSSI piden consentimiento previo para las cookies de medición. Si decidís
-> añadir banner, la landing está preparada para ello (basta con mover el
-> snippet del píxel a una carga condicional en `scripts/build.mjs`).
+> **El píxel espera al consentimiento.** No se carga nada de Meta hasta que la
+> persona pulsa «Aceptar todas» en el banner de cookies. Eso significa que en
+> Events Manager verás menos tráfico del que realmente entra: solo el de quien
+> acepta. Es lo que exige el RGPD y lo que hace también la web principal.
+>
+> Si más adelante queréis recuperar parte de esa medición, el camino es la **API
+> de Conversiones** de Meta enviando los eventos desde `api/lead.js`. El
+> `eventId` que ya se genera está pensado justo para eso: permite deduplicar el
+> evento del navegador y el del servidor.
 
 ---
 
@@ -218,6 +223,7 @@ src/index.html      Contenido y estructura de la página
 src/styles.css      Sistema de diseño (colores, tipografía, componentes)
 src/main.js         Formulario multi-paso, WhatsApp y eventos del píxel
 src/assets/         Imágenes optimizadas en WebP (hero, pasos, retratos) y favicons
+                    Los textos legales viven en src/index.html, en los <dialog>
 api/lead.js         Función serverless que recibe y reparte el lead
 scripts/build.mjs   Copia src/ a dist/, embebe CSS y JS e inyecta variables
 vercel.json         Build, cabeceras de caché y seguridad, X-Robots-Tag
@@ -281,15 +287,56 @@ en `src/index.html`:
 </li>
 ```
 
-> **Ahora mismo hay tres reseñas: las tres reales que nos pasaste.** No he
-> inventado más para rellenar el carrusel. Atribuir testimonios inventados a
-> pacientes sería publicidad engañosa y, en el caso de un servicio sanitario en
-> España, está expresamente restringido. En cuanto tengáis más reseñas reales,
-> se pegan en ese bloque y el carrusel se adapta solo.
+Hay **nueve reseñas, todas reales y publicadas en Google**, con la valoración
+media (5,0) y el número de reseñas visibles encima del carrusel. Los nombres se
+han abreviado al formato habitual en testimonios (por ejemplo, «María A.») y las
+más largas están recortadas en un punto y seguido, sin cambiar ni una palabra.
 
 ---
 
-## 7. Decisiones que conviene conocer
+## 7. Cookies y textos legales
+
+### Banner de cookies
+
+Aparece en la primera visita, justo después de la animación de entrada, y
+**bloquea el Píxel de Meta hasta que haya consentimiento**. Tiene dos botones:
+
+- **Aceptar todas** → se carga el píxel y se envía `PageView`.
+- **Solo necesarias** → no se carga nada de Meta. La landing funciona igual.
+
+La decisión se guarda en `localStorage` bajo `maram_cookie_consent` y se puede
+cambiar en cualquier momento desde «Configurar cookies», al final de la página.
+Mientras el banner está en pantalla, la barra fija de reservar se oculta para no
+apilar dos barras.
+
+### Aviso legal, privacidad y cookies
+
+Los tres textos se abren en **ventanas emergentes sobre la propia página**, no en
+páginas aparte: así se cumple la obligación legal sin romper la regla de no tener
+enlaces de salida. Están redactados a partir de los de `marampsicologia.com` y
+adaptados a lo que esta landing hace realmente (qué datos pide el formulario, qué
+proveedores intervienen, cuánto se conservan).
+
+> ### ⚠️ Antes de publicar: cuatro datos que faltan
+>
+> El aviso legal necesita datos identificativos que no puedo inventar. Están
+> marcados con un comentario `PENDIENTE DE COMPLETAR` en `src/index.html`, dentro
+> de `<dialog id="modal-aviso">`:
+>
+> 1. **Razón social exacta** del titular (autónoma, S.L., sociedad civil…).
+> 2. **NIF o CIF**.
+> 3. **Domicilio** a efectos de notificaciones.
+> 4. **Número de registro sanitario del centro**, que la normativa de centros
+>    sanitarios obliga a mostrar en la publicidad.
+>
+> Añade un `<li>` por cada uno y vuelve a desplegar. Y aunque los textos están
+> escritos con cuidado, **conviene que los revise quien os lleve la parte legal**:
+> yo no soy asesor jurídico y un centro sanitario tiene obligaciones adicionales
+> a las de una web normal.
+
+---
+
+## 8. Decisiones que conviene conocer
 
 - **El botón de WhatsApp nunca depende del backend.** Los enlaces `wa.me` se
   construyen en el navegador. Aunque la función serverless falle, se caiga
@@ -308,5 +355,10 @@ en `src/index.html`:
 - **La barra fija de móvil lleva los dos caminos:** reservar y WhatsApp, uno al
   lado del otro. Mientras esa barra está a la vista, la burbuja flotante se
   esconde para no duplicar el mismo botón.
+- **La cabecera es fija** y lleva el botón de reservar siempre visible, así que
+  el CTA nunca queda fuera de pantalla en ningún punto de la página.
+- **Las dudas frecuentes** están al final a propósito: recogen las objeciones que
+  más frenan (no saber qué contar, si lo online funciona, la permanencia, el
+  encaje con la psicóloga) justo antes del formulario.
 - **Validación del teléfono:** 9 dígitos que empiezan por 6, 7, 8 o 9, con el
   prefijo +34 fijo. Se valida en el navegador y otra vez en el servidor.
