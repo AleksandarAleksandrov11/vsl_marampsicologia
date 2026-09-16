@@ -243,6 +243,39 @@
   });
 
   /* ---------------------------------------------------------
+     Parámetros de campaña (utm_*)
+     Se leen de la URL al entrar y se guardan en la sesión, para que
+     sigan disponibles aunque la persona tarde en rellenar el formulario
+     o el navegador limpie la barra de direcciones.
+     --------------------------------------------------------- */
+  var CAMPOS_UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+  var UTM_KEY = "maram_utm";
+
+  var utm = (function () {
+    var guardado = {};
+    try { guardado = JSON.parse(sessionStorage.getItem(UTM_KEY) || "{}"); } catch (e) {}
+
+    var params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { params = null; }
+
+    var encontrado = false;
+    if (params) {
+      CAMPOS_UTM.forEach(function (campo) {
+        var valor = params.get(campo);
+        if (valor) { guardado[campo] = valor.slice(0, 120); encontrado = true; }
+      });
+      // Identificador de clic de Meta: útil para casar el lead con el anuncio
+      var fbclid = params.get("fbclid");
+      if (fbclid) { guardado.fbclid = fbclid.slice(0, 200); encontrado = true; }
+    }
+
+    if (encontrado) {
+      try { sessionStorage.setItem(UTM_KEY, JSON.stringify(guardado)); } catch (e) {}
+    }
+    return guardado;
+  })();
+
+  /* ---------------------------------------------------------
      Año del footer
      --------------------------------------------------------- */
   var yearEl = $("#year");
@@ -434,7 +467,8 @@
       eventId: eventId,
       origen: "landing-reserva",
       url: window.location.href,
-      referrer: document.referrer || ""
+      referrer: document.referrer || "",
+      utm: utm
     };
 
     var submitBtn = $(".js-submit", form);

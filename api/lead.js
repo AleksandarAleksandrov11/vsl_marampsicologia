@@ -15,6 +15,7 @@
  */
 
 const MAX_BODY = 8 * 1024; // 8 KB: un lead legítimo nunca se acerca a esto
+const WEBHOOK_TIMEOUT = 6000; // ms: por debajo del límite de la función serverless
 
 function readBody(req) {
   if (req.body && typeof req.body === "object") return Promise.resolve(req.body);
@@ -47,20 +48,34 @@ function validate(body) {
   if (nombre.length < 2) return { error: "nombre no válido" };
   if (!/^[6-9]\d{8}$/.test(digits)) return { error: "teléfono no válido" };
 
+  // Parámetros de campaña: solo se aceptan los conocidos y recortados.
+  const utmEntrante = body.utm && typeof body.utm === "object" ? body.utm : {};
+  const utm = {};
+  for (const campo of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"]) {
+    const valor = clean(utmEntrante[campo], 120);
+    if (valor) utm[campo] = valor;
+  }
+
   return {
     lead: {
       nombre,
       telefono: `+34 ${digits}`,
       telefonoE164: `+34${digits}`,
+      telefonoNacional: digits, // los 9 dígitos, tal cual, para la hoja de cálculo
       motivo,
       origen: clean(body.origen, 60) || "landing-reserva",
       eventId: clean(body.eventId, 80),
       url: clean(body.url, 300),
       referrer: clean(body.referrer, 300),
-      recibido: new Date().toISOString()
+      recibido: new Date().toISOString(),
+      ...utm
     }
   };
 }
+
+/** Resumen legible de la campaña para el email de aviso. */
+const campana = (lead) =>
+  [lead.utm_source, lead.utm_campaign, lead.utm_content].filter(Boolean).join(" · ") || "directo";
 
 /* ---------------------------- canal 1: email ---------------------------- */
 async function sendEmail(lead) {
@@ -84,6 +99,8 @@ async function sendEmail(lead) {
             <td style="padding:10px 0;border-bottom:1px solid #E7E2DD"><a href="tel:${esc(lead.telefonoE164)}" style="color:#1A1A1A">${esc(lead.telefono)}</a></td></tr>
         <tr><td style="padding:10px 0;border-bottom:1px solid #E7E2DD;color:#5A5654;vertical-align:top">Motivo</td>
             <td style="padding:10px 0;border-bottom:1px solid #E7E2DD">${esc(lead.motivo) || "<em style='color:#8b8b8b'>No indicado</em>"}</td></tr>
+        <tr><td style="padding:10px 0;border-bottom:1px solid #E7E2DD;color:#5A5654">Campaña</td>
+            <td style="padding:10px 0;border-bottom:1px solid #E7E2DD">${esc(campana(lead))}</td></tr>
         <tr><td style="padding:10px 0;color:#5A5654">Recibido</td>
             <td style="padding:10px 0">${esc(lead.recibido)}</td></tr>
       </table>
@@ -94,6 +111,7 @@ async function sendEmail(lead) {
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
+    signal: AbortSignal.timeout(WEBHOOK_TIMEOUT),
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       from,
@@ -113,17 +131,31 @@ async function sendWebhook(lead) {
   const url = process.env.LEAD_WEBHOOK_URL;
   if (!url) return { channel: "webhook", skipped: true };
 
+  const token = process.env.LEAD_WEBHOOK_TOKEN;
   const headers = { "Content-Type": "application/json" };
-  if (process.env.LEAD_WEBHOOK_TOKEN) headers["X-Lead-Token"] = process.env.LEAD_WEBHOOK_TOKEN;
+  if (token) headers["X-Lead-Token"] = token;
 
   const res = await fetch(url, {
     method: "POST",
     headers,
-    body: JSON.stringify({ ...lead, token: process.env.LEAD_WEBHOOK_TOKEN || undefined })
+    body: JSON.stringify({ ...lead, token: token || undefined }),
+    redirect: "follow", // Apps Script redirige a script.googleusercontent.com
+    signal: AbortSignal.timeout(WEBHOOK_TIMEOUT)
   });
 
-  if (!res.ok) throw new Error(`Webhook ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return { channel: "webhook", ok: true };
+  const cuerpo = (await res.text()).slice(0, 300);
+  if (!res.ok) throw new Error(`Webhook ${res.status}: ${cuerpo}`);
+
+  // Apps Script responde siempre 200, incluso cuando rechaza el token. Sin
+  // mirar el cuerpo, un token mal puesto parecería que ha ido bien y los
+  // leads se perderían en silencio.
+  let datos = null;
+  try { datos = JSON.parse(cuerpo); } catch (e) { /* no es JSON: lo damos por bueno */ }
+  if (datos && datos.ok === false) {
+    throw new Error(`Webhook rechazó el lead: ${datos.error || "sin motivo"}`);
+  }
+
+  return { channel: "webhook", ok: true, fila: datos && datos.fila };
 }
 
 /* -------------------------------- handler -------------------------------- */

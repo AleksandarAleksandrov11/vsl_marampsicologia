@@ -2,7 +2,7 @@
 
 Landing de una sola página para captar primeras sesiones desde anuncios de
 Meta (Instagram y Facebook). Proyecto independiente de `marampsicologia.com`,
-pensado para vivir en **`reserva.marampsicologia.com`**.
+pensado para vivir en **`vls.marampsicologia.com`**.
 
 - Sin menú, sin enlaces de salida y sin indexar: la página solo puede acabar en
   el formulario o en WhatsApp.
@@ -62,7 +62,7 @@ logs de Vercel.
 
 ---
 
-## 2. Publicar en `reserva.marampsicologia.com`
+## 2. Publicar en `vls.marampsicologia.com`
 
 ### Paso 1 — Subir el repositorio a GitHub
 
@@ -86,7 +86,7 @@ rama que quieres publicar es la que Vercel va a seguir.
 ### Paso 3 — Añadir el subdominio en Vercel
 
 1. En el proyecto: **Settings → Domains → Add Domain**.
-2. Escribe `reserva.marampsicologia.com` y pulsa **Add**.
+2. Escribe `vls.marampsicologia.com` y pulsa **Add**.
 3. Vercel mostrará el registro DNS que hay que crear. Anótalo: es lo que tienes
    que pedirle a quien gestione `marampsicologia.com`.
 
@@ -95,11 +95,11 @@ rama que quieres publicar es la que Vercel va a seguir.
 Este es el mensaje exacto que hay que enviar a quien administre el dominio
 (el registrador o el proveedor de hosting de la web principal):
 
-> Necesito publicar una landing en el subdominio `reserva.marampsicologia.com`.
+> Necesito publicar una landing en el subdominio `vls.marampsicologia.com`.
 > ¿Podéis añadir este registro en la zona DNS de `marampsicologia.com`?
 >
 > - **Tipo:** CNAME
-> - **Nombre / Host:** `reserva`
+> - **Nombre / Host:** `vls`
 > - **Valor / Destino:** `cname.vercel-dns.com.`
 > - **TTL:** 3600 (o el valor por defecto)
 >
@@ -120,7 +120,7 @@ Notas importantes:
 
 Con el subdominio ya activo, repasa esta lista:
 
-- [ ] `https://reserva.marampsicologia.com` carga con candado (HTTPS).
+- [ ] `https://vls.marampsicologia.com` carga con candado (HTTPS).
 - [ ] En el código fuente aparece `<meta name="robots" content="noindex, nofollow">`.
 - [ ] La extensión **Meta Pixel Helper** detecta el píxel y un evento `PageView`.
 - [ ] Completa el formulario con datos reales y confirma que llega el email o la fila al Sheet.
@@ -147,31 +147,91 @@ Con el subdominio ya activo, repasa esta lista:
 El aviso llega con el nombre, el teléfono, el motivo y un botón para responder
 directamente por WhatsApp.
 
-### Opción B — Google Sheet vía Apps Script (gratis, sin cuentas nuevas)
+### Opción B — Google Sheet (gratis, sin cuentas nuevas)
 
-1. Crea una hoja de cálculo en Google Sheets.
-2. **Extensiones → Apps Script** y pega este código:
+Los leads caen en la hoja **[Leads MARAM](https://docs.google.com/spreadsheets/d/1t_Klc5hUpHqa11r2Od943rkI-rnoamw6zC71yMHEHqE/edit)**
+con estas columnas:
 
-   ```javascript
-   function doPost(e) {
-     var TOKEN = 'pon-aqui-un-token-secreto'; // debe coincidir con LEAD_WEBHOOK_TOKEN
-     var d = JSON.parse(e.postData.contents);
-     if (TOKEN && d.token !== TOKEN) {
-       return ContentService.createTextOutput('no autorizado');
-     }
-     SpreadsheetApp.getActiveSheet().appendRow([
-       new Date(), d.nombre, d.telefono, d.motivo, d.origen, d.url, d.referrer
-     ]);
-     return ContentService.createTextOutput('ok');
-   }
-   ```
+| Fecha | Nombre | Teléfono | Motivo de consulta | utm_source | utm_campaign | utm_content | Estado | Importe | Notas |
+|---|---|---|---|---|---|---|---|---|---|
 
-3. **Implementar → Nueva implementación → Aplicación web**.
-   - *Ejecutar como:* yo
-   - *Quién tiene acceso:* **cualquier usuario**
-4. Copia la URL que termina en `/exec` y guárdala como `LEAD_WEBHOOK_URL`.
-   Guarda el mismo token como `LEAD_WEBHOOK_TOKEN`.
-5. Vuelve a desplegar.
+Las siete primeras las rellena la web sola. **Estado** entra siempre como
+`Nuevo` y tiene desplegable (Contactado, Cita agendada, En proceso, No
+contesta, No interesa). **Importe** y **Notas** son vuestras, para ir anotando
+según avanza cada persona.
+
+#### Paso 1 — Pegar el script en la hoja
+
+1. Abre la hoja y ve a **Extensiones → Apps Script**.
+2. Borra lo que haya en `Código.gs` y pega **todo** el contenido de
+   [`docs/google-sheet.gs`](docs/google-sheet.gs) de este repositorio.
+3. En la línea del `TOKEN`, cambia `CAMBIA-ESTO-POR-UN-TEXTO-SECRETO` por una
+   contraseña larga que te inventes. Apúntala: hace falta en el paso 3.
+4. Guarda con el icono del disquete.
+
+#### Paso 2 — Publicarlo como aplicación web
+
+1. Arriba a la derecha, **Implementar → Nueva implementación**.
+2. En el engranaje de la izquierda elige **Aplicación web**.
+3. Rellena:
+   - *Descripción:* `Leads landing MARAM`
+   - *Ejecutar como:* **Yo** (tu cuenta)
+   - *Quién tiene acceso:* **Cualquier usuario**
+4. **Implementar**. Google pedirá permisos la primera vez: acepta. Si sale el
+   aviso de «app no verificada», pulsa *Configuración avanzada → Ir a (nombre)*.
+   Es tu propio script, no hay riesgo.
+5. Copia la **URL de la aplicación web**. Termina en `/exec`.
+
+> **Comprobación rápida:** pega esa URL en el navegador. Debe responder
+> `{"ok":true,"mensaje":"Conexión con MARAM lista. Esperando leads."}`.
+> Si pide iniciar sesión, vuelve al paso 3 y pon *Cualquier usuario*.
+
+#### Paso 3 — Conectarla con la landing
+
+En **Vercel → Settings → Environment Variables**, añade las dos:
+
+| Variable | Valor |
+|---|---|
+| `LEAD_WEBHOOK_URL` | la URL que acaba en `/exec` |
+| `LEAD_WEBHOOK_TOKEN` | el mismo texto secreto que pusiste en el script |
+
+Vuelve a desplegar (**Deployments → … → Redeploy**) para que tome las
+variables, y envía el formulario con datos reales. La fila debe aparecer en la
+hoja en unos segundos.
+
+#### Si cambias el script más adelante
+
+Las ediciones no se aplican solas: hay que volver a **Implementar → Gestionar
+implementaciones → editar (lápiz) → Versión: Nueva → Implementar**. La URL no
+cambia, así que no hay que tocar Vercel.
+
+#### Qué hacer si no llega la fila
+
+| Síntoma | Causa más probable |
+|---|---|
+| La hoja sigue vacía y el email tampoco llega | Las variables no están en Vercel o falta redesplegar |
+| Abrir la URL `/exec` pide iniciar sesión | En el paso 2 no se puso *Cualquier usuario* |
+| En los logs de Vercel sale `token no válido` | El `TOKEN` del script y `LEAD_WEBHOOK_TOKEN` no coinciden |
+| Llegan filas pero sin `utm_source` | La visita entró sin parámetros: es tráfico directo, no de anuncio |
+
+Los logs están en **Vercel → el proyecto → Logs**, filtrando por `/api/lead`.
+Cada lead deja una línea que empieza por `[lead]`, así que **aunque fallen la
+hoja y el email, el lead nunca se pierde del todo**.
+
+### Etiquetar los anuncios para que se llenen los utm
+
+Las columnas `utm_source`, `utm_campaign` y `utm_content` se rellenan con lo
+que venga en la URL del anuncio. En Meta Ads Manager, en el campo
+**Parámetros de URL** de cada anuncio, pon por ejemplo:
+
+```
+utm_source=meta&utm_medium=paid&utm_campaign=ansiedad&utm_content=video1
+```
+
+Cambiando `utm_campaign` y `utm_content` por anuncio sabréis, desde la propia
+hoja, qué creatividad trae las personas que acaban reservando. Los parámetros
+se guardan al entrar, así que siguen ahí aunque tarden en rellenar el
+formulario.
 
 ---
 
