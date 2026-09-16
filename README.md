@@ -186,17 +186,32 @@ Vuelve a la hoja: debe haber aparecido una fila que empieza por
 2. En el engranaje de la izquierda, elige **Aplicación web**.
 3. Rellena:
    - *Ejecutar como:* **Yo**
-   - *Quién tiene acceso:* **Cualquier usuario** ← si pones otra cosa, no funciona
+   - *Quién tiene acceso:* **Cualquier usuario**
 4. **Implementar** y copia la **URL de la aplicación web**. Acaba en `/exec`.
 
-Pega esa URL en el navegador. Debe responder algo como:
+> ### ⚠️ Aquí falla casi todo el mundo
+>
+> En el desplegable de *Quién tiene acceso* hay dos opciones que parecen lo
+> mismo:
+>
+> | Opción | ¿Sirve? |
+> |---|---|
+> | **Cualquier usuario** | **Sí.** Es esta. |
+> | Cualquier usuario con una cuenta de Google | No. Sigue pidiendo iniciar sesión, y el servidor no puede hacerlo. |
+> | Solo yo | No. |
 
-```json
-{"ok":true,"mensaje":"Conexión con MARAM lista. Esperando leads."}
-```
+**Cómo comprobar que quedó bien.** Abre la URL `/exec` en una **ventana de
+incógnito** (Ctrl+Mayús+N, o Cmd+Mayús+N en Mac). Es importante que sea de
+incógnito: en tu navegador normal estás identificada con tu cuenta, así que la
+verás funcionar aunque esté mal publicada, y el servidor de la web no tiene
+cuenta con la que identificarse.
 
-Si en vez de eso te pide iniciar sesión, vuelve al punto 3 y pon
-*Cualquier usuario*.
+- Si ves `{"ok":true,"mensaje":"Conexión con MARAM lista..."}` → correcto.
+- Si te pide **iniciar sesión** → está mal. Vuelve al punto 3.
+
+**Para corregirlo sin cambiar de URL:** *Implementar → Gestionar
+implementaciones → icono del lápiz → Quién tiene acceso: Cualquier usuario →
+Implementar*.
 
 #### Paso 4 — Darle esa URL a la web (una sola variable)
 
@@ -237,7 +252,7 @@ dónde van los leads ahora mismo sin enseñar ninguna clave.
 |---|---|
 | «NINGÚN CANAL CONFIGURADO» | La variable no está en Vercel, o está pero falta redesplegar (paso 4.7) |
 | `sheet: configurado` y la hoja vacía | El script no está publicado, o no como *Cualquier usuario* |
-| La URL `/exec` pide iniciar sesión | En el paso 3 no se puso *Cualquier usuario* |
+| La URL `/exec` en incógnito pide iniciar sesión | Está publicada como *Solo yo* o como *Cualquier usuario con una cuenta de Google*. Tiene que ser *Cualquier usuario* |
 | Llegan filas pero sin `utm_source` | Esa visita entró sin parámetros: es tráfico directo, no de anuncio |
 
 Los logs están en **Vercel → el proyecto → Logs**, filtrando por `/api/lead`.
