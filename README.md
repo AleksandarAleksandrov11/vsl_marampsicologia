@@ -2,7 +2,7 @@
 
 Landing de una sola página para captar primeras sesiones desde anuncios de
 Meta (Instagram y Facebook). Proyecto independiente de `marampsicologia.com`,
-pensado para vivir en **`vls.marampsicologia.com`**.
+pensado para vivir en **`vsl.marampsicologia.com`**.
 
 - Sin menú, sin enlaces de salida y sin indexar: la página solo puede acabar en
   el formulario o en WhatsApp.
@@ -62,7 +62,7 @@ logs de Vercel.
 
 ---
 
-## 2. Publicar en `vls.marampsicologia.com`
+## 2. Publicar en `vsl.marampsicologia.com`
 
 ### Paso 1 — Subir el repositorio a GitHub
 
@@ -86,7 +86,7 @@ rama que quieres publicar es la que Vercel va a seguir.
 ### Paso 3 — Añadir el subdominio en Vercel
 
 1. En el proyecto: **Settings → Domains → Add Domain**.
-2. Escribe `vls.marampsicologia.com` y pulsa **Add**.
+2. Escribe `vsl.marampsicologia.com` y pulsa **Add**.
 3. Vercel mostrará el registro DNS que hay que crear. Anótalo: es lo que tienes
    que pedirle a quien gestione `marampsicologia.com`.
 
@@ -95,11 +95,11 @@ rama que quieres publicar es la que Vercel va a seguir.
 Este es el mensaje exacto que hay que enviar a quien administre el dominio
 (el registrador o el proveedor de hosting de la web principal):
 
-> Necesito publicar una landing en el subdominio `vls.marampsicologia.com`.
+> Necesito publicar una landing en el subdominio `vsl.marampsicologia.com`.
 > ¿Podéis añadir este registro en la zona DNS de `marampsicologia.com`?
 >
 > - **Tipo:** CNAME
-> - **Nombre / Host:** `vls`
+> - **Nombre / Host:** `vsl`
 > - **Valor / Destino:** `cname.vercel-dns.com.`
 > - **TTL:** 3600 (o el valor por defecto)
 >
@@ -120,7 +120,7 @@ Notas importantes:
 
 Con el subdominio ya activo, repasa esta lista:
 
-- [ ] `https://vls.marampsicologia.com` carga con candado (HTTPS).
+- [ ] `https://vsl.marampsicologia.com` carga con candado (HTTPS).
 - [ ] En el código fuente aparece `<meta name="robots" content="noindex, nofollow">`.
 - [ ] La extensión **Meta Pixel Helper** detecta el píxel y un evento `PageView`.
 - [ ] Completa el formulario con datos reales y confirma que llega el email o la fila al Sheet.
@@ -207,16 +207,39 @@ cambia, así que no hay que tocar Vercel.
 
 #### Qué hacer si no llega la fila
 
+**Empieza siempre por aquí.** Abre en el navegador:
+
+```
+https://vsl.marampsicologia.com/api/lead
+```
+
+Te dice a dónde van los leads ahora mismo, sin enseñar ninguna clave:
+
+```json
+{ "canales": { "email": "configurado", "sheet": "configurado" },
+  "aviso": "Los leads se entregan correctamente." }
+```
+
+Si en su lugar pone **«NINGÚN CANAL CONFIGURADO»**, el problema no está en la
+hoja: **faltan las variables en Vercel**, o se añadieron pero no se ha vuelto a
+desplegar. Vercel solo las aplica en despliegues nuevos.
+
 | Síntoma | Causa más probable |
 |---|---|
-| La hoja sigue vacía y el email tampoco llega | Las variables no están en Vercel o falta redesplegar |
+| `/api/lead` dice «NINGÚN CANAL CONFIGURADO» | Faltan las variables en Vercel, o falta redesplegar tras añadirlas |
+| `sheet: configurado` pero la hoja sigue vacía | El script no está publicado, o lo está como *Solo yo* |
 | Abrir la URL `/exec` pide iniciar sesión | En el paso 2 no se puso *Cualquier usuario* |
 | En los logs de Vercel sale `token no válido` | El `TOKEN` del script y `LEAD_WEBHOOK_TOKEN` no coinciden |
 | Llegan filas pero sin `utm_source` | La visita entró sin parámetros: es tráfico directo, no de anuncio |
 
 Los logs están en **Vercel → el proyecto → Logs**, filtrando por `/api/lead`.
 Cada lead deja una línea que empieza por `[lead]`, así que **aunque fallen la
-hoja y el email, el lead nunca se pierde del todo**.
+hoja y el email, el lead nunca se pierde del todo**: siempre se puede recuperar
+de ahí.
+
+> **Importante sobre Vercel.** Las variables de entorno no se aplican solas a
+> lo que ya está publicado. Después de añadirlas hay que ir a
+> **Deployments → el último → … → Redeploy**. Es el fallo más habitual.
 
 ### Etiquetar los anuncios para que se llenen los utm
 

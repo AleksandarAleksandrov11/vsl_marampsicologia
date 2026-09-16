@@ -163,6 +163,26 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (req.method === "OPTIONS") return res.status(204).end();
+
+  // Abrir /api/lead en el navegador dice a dónde van los leads ahora mismo,
+  // sin revelar ninguna clave. Sirve para comprobar de un vistazo si las
+  // variables están puestas en Vercel.
+  if (req.method === "GET") {
+    const email = Boolean(process.env.RESEND_API_KEY && process.env.LEAD_TO_EMAIL);
+    const sheet = Boolean(process.env.LEAD_WEBHOOK_URL);
+    return res.status(200).json({
+      ok: true,
+      canales: {
+        email: email ? "configurado" : "sin configurar (faltan RESEND_API_KEY y LEAD_TO_EMAIL)",
+        sheet: sheet ? "configurado" : "sin configurar (falta LEAD_WEBHOOK_URL)"
+      },
+      token: process.env.LEAD_WEBHOOK_TOKEN ? "definido" : "sin definir",
+      aviso: email || sheet
+        ? "Los leads se entregan correctamente."
+        : "NINGÚN CANAL CONFIGURADO: los leads solo quedan en los registros de Vercel."
+    });
+  }
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
