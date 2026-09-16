@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Landing de captación para MARAM Psicología (reserva.marampsicologia.com)",
+  "description": "Landing de captación para MARAM Psicología (vls.marampsicologia.com)",
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "vercel dev",
