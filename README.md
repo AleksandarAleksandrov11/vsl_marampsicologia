@@ -52,8 +52,7 @@ Vercel. Solo necesitas estas variables si algún día quieres cambiarlos:
 
 | Variable | Qué es |
 |---|---|
-| `LEAD_WEBHOOK_URL` | URL de un Web App de Google Apps Script, un Zap de Zapier o un escenario de Make. |
-| `LEAD_WEBHOOK_TOKEN` | Opcional. Token compartido para que el webhook rechace envíos ajenos. |
+| `LEAD_WEBHOOK_URL` | URL del Web App de Google Apps Script (la que acaba en `/exec`). Es la única que hace falta. |
 
 Puedes activar **las dos a la vez, una sola o ninguna**. Si no configuras
 ninguna, la landing sigue funcionando: el formulario muestra la pantalla de
@@ -162,84 +161,88 @@ según avanza cada persona.
 
 #### Paso 1 — Pegar el script en la hoja
 
-1. Abre la hoja y ve a **Extensiones → Apps Script**.
-2. Borra lo que haya en `Código.gs` y pega **todo** el contenido de
-   [`docs/google-sheet.gs`](docs/google-sheet.gs) de este repositorio.
-3. En la línea del `TOKEN`, cambia `CAMBIA-ESTO-POR-UN-TEXTO-SECRETO` por una
-   contraseña larga que te inventes. Apúntala: hace falta en el paso 3.
-4. Guarda con el icono del disquete.
+1. Abre la hoja → **Extensiones → Apps Script**.
+2. Borra lo que haya en `Código.gs` y pega **todo**
+   [`docs/google-sheet.gs`](docs/google-sheet.gs).
+3. Guarda con el icono del disquete. No hay nada que editar dentro.
 
-#### Paso 2 — Publicarlo como aplicación web
+#### Paso 2 — Comprobar que la hoja recibe (sin tocar Vercel)
 
-1. Arriba a la derecha, **Implementar → Nueva implementación**.
-2. En el engranaje de la izquierda elige **Aplicación web**.
+En la barra de arriba del editor, elige la función **`pruebaDeEscritura`** y
+pulsa **Ejecutar**. La primera vez pedirá permisos: acepta. Si sale el aviso de
+«app no verificada», pulsa *Configuración avanzada → Ir a (nombre del proyecto)*.
+Es tu propio script.
+
+Vuelve a la hoja: debe haber aparecido una fila que empieza por
+**«PRUEBA — puedes borrar esta fila»**, con todas las columnas creadas.
+
+> Este paso separa el problema en dos mitades. **Si la fila aparece, la parte
+> de Google está perfecta** y lo que queda por arreglar está en Vercel. Si no
+> aparece, el fallo está en los permisos del script y no tiene sentido seguir.
+
+#### Paso 3 — Publicarlo como aplicación web
+
+1. Arriba a la derecha: **Implementar → Nueva implementación**.
+2. En el engranaje de la izquierda, elige **Aplicación web**.
 3. Rellena:
-   - *Descripción:* `Leads landing MARAM`
-   - *Ejecutar como:* **Yo** (tu cuenta)
-   - *Quién tiene acceso:* **Cualquier usuario**
-4. **Implementar**. Google pedirá permisos la primera vez: acepta. Si sale el
-   aviso de «app no verificada», pulsa *Configuración avanzada → Ir a (nombre)*.
-   Es tu propio script, no hay riesgo.
-5. Copia la **URL de la aplicación web**. Termina en `/exec`.
+   - *Ejecutar como:* **Yo**
+   - *Quién tiene acceso:* **Cualquier usuario** ← si pones otra cosa, no funciona
+4. **Implementar** y copia la **URL de la aplicación web**. Acaba en `/exec`.
 
-> **Comprobación rápida:** pega esa URL en el navegador. Debe responder
-> `{"ok":true,"mensaje":"Conexión con MARAM lista. Esperando leads."}`.
-> Si pide iniciar sesión, vuelve al paso 3 y pon *Cualquier usuario*.
+Pega esa URL en el navegador. Debe responder algo como:
 
-#### Paso 3 — Conectarla con la landing
+```json
+{"ok":true,"mensaje":"Conexión con MARAM lista. Esperando leads."}
+```
 
-En **Vercel → Settings → Environment Variables**, añade las dos:
+Si en vez de eso te pide iniciar sesión, vuelve al punto 3 y pon
+*Cualquier usuario*.
 
-| Variable | Valor |
-|---|---|
-| `LEAD_WEBHOOK_URL` | la URL que acaba en `/exec` |
-| `LEAD_WEBHOOK_TOKEN` | el mismo texto secreto que pusiste en el script |
+#### Paso 4 — Darle esa URL a la web (una sola variable)
 
-Vuelve a desplegar (**Deployments → … → Redeploy**) para que tome las
-variables, y envía el formulario con datos reales. La fila debe aparecer en la
+Esto es lo único que hay que hacer en Vercel:
+
+1. Entra en [vercel.com](https://vercel.com) y abre el proyecto
+   **vsl_marampsicologia**.
+2. Pestaña **Settings** (arriba) → **Environment Variables** (menú izquierdo).
+3. En *Key* escribe exactamente: `LEAD_WEBHOOK_URL`
+4. En *Value* pega la URL que acaba en `/exec`.
+5. **Deja marcadas las tres casillas**: Production, Preview y Development. Si
+   solo marcas Preview, la web publicada seguirá sin recibir nada.
+6. **Save**.
+7. Ve a la pestaña **Deployments**, en el primero de la lista pulsa los
+   **tres puntos (…) → Redeploy → Redeploy**.
+
+> **Este último punto es imprescindible.** Vercel no aplica las variables a lo
+> que ya está publicado: solo a los despliegues nuevos. Guardar la variable sin
+> redesplegar no cambia nada, y es el motivo número uno de que «no llegue nada».
+
+#### Paso 5 — Comprobar que ya está
+
+Abre <https://vsl.marampsicologia.com/api/lead>. Tiene que decir:
+
+```json
+{"canales":{"sheet":"configurado"},"aviso":"Los leads se entregan correctamente."}
+```
+
+Ahora rellena el formulario de la web con datos reales. La fila aparece en la
 hoja en unos segundos.
-
-#### Si cambias el script más adelante
-
-Las ediciones no se aplican solas: hay que volver a **Implementar → Gestionar
-implementaciones → editar (lápiz) → Versión: Nueva → Implementar**. La URL no
-cambia, así que no hay que tocar Vercel.
 
 #### Qué hacer si no llega la fila
 
-**Empieza siempre por aquí.** Abre en el navegador:
+**Empieza siempre por** <https://vsl.marampsicologia.com/api/lead>, que dice a
+dónde van los leads ahora mismo sin enseñar ninguna clave.
 
-```
-https://vsl.marampsicologia.com/api/lead
-```
-
-Te dice a dónde van los leads ahora mismo, sin enseñar ninguna clave:
-
-```json
-{ "canales": { "email": "configurado", "sheet": "configurado" },
-  "aviso": "Los leads se entregan correctamente." }
-```
-
-Si en su lugar pone **«NINGÚN CANAL CONFIGURADO»**, el problema no está en la
-hoja: **faltan las variables en Vercel**, o se añadieron pero no se ha vuelto a
-desplegar. Vercel solo las aplica en despliegues nuevos.
-
-| Síntoma | Causa más probable |
+| Lo que ves | Lo que pasa |
 |---|---|
-| `/api/lead` dice «NINGÚN CANAL CONFIGURADO» | Faltan las variables en Vercel, o falta redesplegar tras añadirlas |
-| `sheet: configurado` pero la hoja sigue vacía | El script no está publicado, o lo está como *Solo yo* |
-| Abrir la URL `/exec` pide iniciar sesión | En el paso 2 no se puso *Cualquier usuario* |
-| En los logs de Vercel sale `token no válido` | El `TOKEN` del script y `LEAD_WEBHOOK_TOKEN` no coinciden |
-| Llegan filas pero sin `utm_source` | La visita entró sin parámetros: es tráfico directo, no de anuncio |
+| «NINGÚN CANAL CONFIGURADO» | La variable no está en Vercel, o está pero falta redesplegar (paso 4.7) |
+| `sheet: configurado` y la hoja vacía | El script no está publicado, o no como *Cualquier usuario* |
+| La URL `/exec` pide iniciar sesión | En el paso 3 no se puso *Cualquier usuario* |
+| Llegan filas pero sin `utm_source` | Esa visita entró sin parámetros: es tráfico directo, no de anuncio |
 
 Los logs están en **Vercel → el proyecto → Logs**, filtrando por `/api/lead`.
 Cada lead deja una línea que empieza por `[lead]`, así que **aunque fallen la
-hoja y el email, el lead nunca se pierde del todo**: siempre se puede recuperar
-de ahí.
-
-> **Importante sobre Vercel.** Las variables de entorno no se aplican solas a
-> lo que ya está publicado. Después de añadirlas hay que ir a
-> **Deployments → el último → … → Redeploy**. Es el fallo más habitual.
+hoja y el email, ningún lead se pierde**: siempre se puede recuperar de ahí.
 
 ### Etiquetar los anuncios para que se llenen los utm
 

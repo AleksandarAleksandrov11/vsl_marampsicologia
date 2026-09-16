@@ -2,19 +2,13 @@
  * MARAM Psicología — Recepción de leads en Google Sheets
  * ======================================================
  *
- * Pega este archivo entero en Extensiones → Apps Script de tu hoja de cálculo,
- * cambia el TOKEN de abajo y publícalo como aplicación web.
- * Los pasos exactos están en el README del proyecto, sección 3, opción B.
+ * Pega este archivo entero en Extensiones → Apps Script de tu hoja y publícalo
+ * como aplicación web. Los pasos exactos están en el README, sección 3.
  *
- * No hace falta crear las columnas a mano: la primera vez que llegue un lead
- * se crean solas, con su cabecera, el formato de fecha y de importe, y un
+ * No hay que crear las columnas a mano: la primera vez que llegue un lead se
+ * crean solas, con su cabecera, el formato de fecha y de importe, y un
  * desplegable en la columna Estado.
  */
-
-/** Debe coincidir con la variable LEAD_WEBHOOK_TOKEN de Vercel.
- *  Pon cualquier texto largo y difícil de adivinar. Si lo dejas vacío,
- *  cualquiera que descubra la URL podría escribir en tu hoja. */
-const TOKEN = 'CAMBIA-ESTO-POR-UN-TEXTO-SECRETO';
 
 /** Pestaña donde se escriben los leads. Se crea si no existe. */
 const NOMBRE_HOJA = 'Leads';
@@ -26,20 +20,19 @@ const NOMBRE_HOJA = 'Leads';
  *   ancho  → opcional, en píxeles
  */
 const COLUMNAS = [
-  { clave: 'recibido',     titulo: 'Fecha',              ancho: 150 },
-  { clave: 'nombre',       titulo: 'Nombre',             ancho: 160 },
-  { clave: 'telefonoNacional', titulo: 'Teléfono',       ancho: 130 },
-  { clave: 'motivo',       titulo: 'Motivo de consulta', ancho: 420 },
-  { clave: 'utm_source',   titulo: 'utm_source',         ancho: 110 },
-  { clave: 'utm_campaign', titulo: 'utm_campaign',       ancho: 140 },
-  { clave: 'utm_content',  titulo: 'utm_content',        ancho: 120 },
-  { clave: '',             titulo: 'Estado',             ancho: 130 },
-  { clave: '',             titulo: 'Importe',            ancho: 100 },
-  { clave: '',             titulo: 'Notas',              ancho: 300 }
+  { clave: 'recibido',         titulo: 'Fecha',              ancho: 150 },
+  { clave: 'nombre',           titulo: 'Nombre',             ancho: 160 },
+  { clave: 'telefonoNacional', titulo: 'Teléfono',           ancho: 130 },
+  { clave: 'motivo',           titulo: 'Motivo de consulta', ancho: 420 },
+  { clave: 'utm_source',       titulo: 'utm_source',         ancho: 110 },
+  { clave: 'utm_campaign',     titulo: 'utm_campaign',       ancho: 140 },
+  { clave: 'utm_content',      titulo: 'utm_content',        ancho: 120 },
+  { clave: '',                 titulo: 'Estado',             ancho: 130 },
+  { clave: '',                 titulo: 'Importe',            ancho: 100 },
+  { clave: '',                 titulo: 'Notas',              ancho: 300 }
 ];
 
-/** Opciones del desplegable de la columna Estado. La primera es la que se
- *  pone sola en cada lead nuevo. */
+/** Opciones del desplegable de Estado. La primera se pone sola en cada lead. */
 const ESTADOS = [
   'Nuevo',
   'Contactado',
@@ -58,18 +51,13 @@ function doPost(e) {
     }
 
     const datos = JSON.parse(e.postData.contents);
-
-    if (TOKEN && datos.token !== TOKEN) {
-      return responder({ ok: false, error: 'token no válido' });
-    }
-
     const hoja = obtenerHoja();
-    const fila = COLUMNAS.map(function (col) {
+
+    hoja.appendRow(COLUMNAS.map(function (col) {
       if (!col.clave) return col.titulo === 'Estado' ? ESTADOS[0] : '';
       return valor(col.clave, datos[col.clave]);
-    });
+    }));
 
-    hoja.appendRow(fila);
     return responder({ ok: true, fila: hoja.getLastRow() });
   } catch (err) {
     return responder({ ok: false, error: String(err) });
@@ -81,13 +69,36 @@ function doGet() {
   return responder({ ok: true, mensaje: 'Conexión con MARAM lista. Esperando leads.' });
 }
 
+/**
+ * PRUEBA MANUAL
+ * -------------
+ * Elige esta función arriba y pulsa «Ejecutar». Debe aparecer una fila de
+ * prueba en la hoja. Si aparece, la parte de Google está bien y lo que falta
+ * por arreglar está en Vercel.
+ */
+function pruebaDeEscritura() {
+  const respuesta = doPost({
+    postData: {
+      contents: JSON.stringify({
+        recibido: new Date().toISOString(),
+        nombre: 'PRUEBA — puedes borrar esta fila',
+        telefonoNacional: '600000000',
+        motivo: 'Fila escrita desde el editor de Apps Script.',
+        utm_source: 'prueba',
+        utm_campaign: 'instalacion',
+        utm_content: 'manual'
+      })
+    }
+  });
+  Logger.log(respuesta.getContent());
+}
+
 /* ------------------------------------------------------------------ */
 
 function obtenerHoja() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
   let hoja = libro.getSheetByName(NOMBRE_HOJA);
   if (!hoja) hoja = libro.insertSheet(NOMBRE_HOJA);
-
   if (hoja.getLastRow() === 0) prepararHoja(hoja);
   return hoja;
 }
@@ -129,8 +140,7 @@ function valor(clave, bruto) {
 
   // Un texto que empiece por = + - @ lo interpretaría la hoja como fórmula.
   // El motivo lo escribe quien rellena el formulario y los utm vienen de la
-  // URL del anuncio, así que conviene neutralizarlos. El teléfono llega en
-  // formato nacional, sin prefijo, y no entra por aquí.
+  // URL del anuncio, así que conviene neutralizarlos.
   const texto = String(bruto);
   return /^[=+\-@]/.test(texto) ? "'" + texto : texto;
 }
