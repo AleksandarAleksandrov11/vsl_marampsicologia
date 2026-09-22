@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- Tráfico de pago exclusivamente. No debe indexarse. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+
+<title>Reserva tu primera sesión | MARAM Psicología</title>
+<meta name="description" content="Terapia psicológica online con psicólogas sanitarias colegiadas. Primera sesión 45€ (60 min). Reserva en menos de un minuto.">
+<meta name="theme-color" content="#1A1A1A">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="/assets/hero-mobile.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/hero-desktop.webp" media="(min-width: 768px)" fetchpriority="high">
+
+<!-- Fuentes de marca, sin bloquear el primer render -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap"></noscript>
+
+<!--CSS-->
+
+<script>
+  window.MARAM = {
+    pixelId: "{{META_PIXEL_ID}}",
+    phone: "{{WHATSAPP_PHONE}}",
+    leadEndpoint: "/api/lead",
+    consentKey: "maram_cookie_consent"
+  };
+  // Se marca antes del primer pintado.
+  (function (d) {
+    var r = d.documentElement;
+    r.className += " js";
+    try {
+      if (sessionStorage.getItem("maram-intro")) r.className += " intro-skip";
+    } catch (e) {}
+  })(document);
+</script>
+<!--PIXEL-->
+</head>
+
+<body>
+
+<!-- Símbolos SVG reutilizados -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.6 6.1 20.7l1.2-6.6-4.8-4.6 6.6-.9z"/></symbol>
+</svg>
+
+<a class="skip-link" href="#formulario">Ir al formulario de reserva</a>
+
+<!-- Intro. Se desvanece por CSS, así que la página queda visible sin JS. -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__stage">
+    <svg class="intro__butterfly" viewBox="0 0 120 100" fill="none" stroke="currentColor"
+         stroke-width="3.2" stroke-linejoin="round" aria-hidden="true">
+      <g class="wing wing--l">
+        <path d="M60 62 C 56 34, 68 10, 88 6 C 106 3, 110 22, 100 38 C 91 52, 75 60, 60 62 Z"/>
+        <path d="M60 63 C 74 63, 92 68, 98 80 C 104 92, 92 99, 80 95 C 66 90, 60 76, 60 63 Z"/>
+      </g>
+      <g class="wing wing--r">
+        <path d="M60 62 C 56 34, 68 10, 88 6 C 106 3, 110 22, 100 38 C 91 52, 75 60, 60 62 Z"/>
+        <path d="M60 63 C 74 63, 92 68, 98 80 C 104 92, 92 99, 80 95 C 66 90, 60 76, 60 63 Z"/>
+      </g>
+      <path d="M60 60 C 58 46, 54 38, 48 33" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M60 60 C 62 46, 66 38, 72 33" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+    <p class="intro__word">MARAM</p>
+  </div>
+</div>
+
+<!-- Cabecera fija -->
+<header class="header" id="header">
+  <div class="wrap header__inner">
+    <img class="header__logo" src="/assets/logo-maram.webp" width="351" height="96"
+         alt="MARAM Psicología" decoding="async">
+    <a class="btn btn--primary header__cta js-cta" href="#formulario" data-cta="cabecera">
+      Reservar sesión
+    </a>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <picture class="hero__media">
+      <source media="(max-width: 767px)" srcset="/assets/hero-mobile.webp" width="720" height="920">
+      <img src="/assets/hero-desktop.webp" width="1080" height="734" alt="" aria-hidden="true"
+           fetchpriority="high" decoding="async">
+    </picture>
+
+    <div class="wrap hero__inner">
+      <p class="eyebrow rise" style="--d:0">Terapia online · Psicólogas colegiadas</p>
+
+      <h1 class="hero__title rise" style="--d:1">No tienes que poder con todo tú&nbsp;solo/a</h1>
+
+      <p class="hero__sub rise" style="--d:2">
+        Un espacio seguro para hablar de lo que te pesa. Sin juicios y a tu ritmo.
+      </p>
+
+      <div class="rise" style="--d:3">
+        <a class="btn btn--primary btn--lg js-cta" href="#formulario" data-cta="hero">
+          Reservar mi primera sesión
+        </a>
+      </div>
+    </div>
+
+    <span class="hero__scroll" aria-hidden="true"></span>
+  </section>
+
+  <!-- Datos de confianza -->
+  <section class="stats" aria-label="MARAM en cifras">
+    <div class="wrap">
+      <ul class="stats__grid">
+        <li class="stat reveal" style="--d:0">
+          <span class="stat__value">5,0</span>
+          <span class="stars" aria-hidden="true">
+            <svg aria-hidden="true"><use href="#i-star"/></svg>
+            <svg aria-hidden="true"><use href="#i-star"/></svg>
+            <svg aria-hidden="true"><use href="#i-star"/></svg>
+            <svg aria-hidden="true"><use href="#i-star"/></svg>
+            <svg aria-hidden="true"><use href="#i-star"/></svg>
+          </span>
+          <span class="stat__label">en Google</span>
+        </li>
+        <li class="stat reveal" style="--d:1">
+          <span class="stat__value">45&nbsp;€</span>
+          <span class="stat__label">tu primera sesión</span>
+        </li>
+        <li class="stat reveal" style="--d:2">
+          <span class="stat__value">100&nbsp;%</span>
+          <span class="stat__label">online y confidencial</span>
+        </li>
+        <li class="stat reveal" style="--d:3">
+          <span class="stat__value">2</span>
+          <span class="stat__label">psicólogas sanitarias colegiadas</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ¿Te suena alguna? -->
+  <section class="section section--cream" aria-labelledby="empatia-titulo">
+    <div class="wrap">
+      <h2 class="h2 center reveal" id="empatia-titulo">¿Te suena alguna?</h2>
+
+      <ul class="feels">
+        <li class="feel reveal" style="--d:0">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20.5s-7-4.3-7-9.4A3.8 3.8 0 0 1 12 8.6a3.8 3.8 0 0 1 7 2.5c0 5.1-7 9.4-7 9.4z"/>
+              <path d="M4 5.5h5M15 5.5h5"/>
+            </svg>
+          </span>
+          <p>Te despiertas con un peso en el pecho.</p>
+        </li>
+        <li class="feel reveal" style="--d:1">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".9" fill="currentColor"/>
+            </svg>
+          </span>
+          <p>Te exiges tanto que nunca es suficiente.</p>
+        </li>
+        <li class="feel reveal" style="--d:2">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <path d="M2.5 9c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>
+              <path d="M2.5 15c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>
+            </svg>
+          </span>
+          <p>Te sobrepasan emociones que antes gestionabas.</p>
+        </li>
+        <li class="feel reveal" style="--d:3">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3.5 7.5h17c0 6-2.6 9.5-6 9.5-1.6 0-2.3-1.2-2.5-2-.2.8-.9 2-2.5 2-3.4 0-6-3.5-6-9.5z"/>
+              <path d="M8 11.5h1.5M14.5 11.5H16"/>
+            </svg>
+          </span>
+          <p>Estás agotado/a de aparentar que todo va bien.</p>
+        </li>
+        <li class="feel reveal" style="--d:4">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="7" cy="8" r="2.6"/><circle cx="16.5" cy="7" r="2.6"/>
+              <path d="M3 20c0-2.6 1.8-4.4 4-4.4s4 1.8 4 4.4"/>
+              <path d="M13 20c0-3.4 1.6-5.6 4-5.6s4 2.2 4 5.6"/>
+            </svg>
+          </span>
+          <p>Sientes que los demás avanzan y tú te has quedado atrás.</p>
+        </li>
+        <li class="feel reveal" style="--d:5">
+          <span class="feel__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/>
+              <path d="M6 6l2.1 2.1M15.9 15.9L18 18M18 6l-2.1 2.1M8.1 15.9L6 18"/>
+            </svg>
+          </span>
+          <p>Sabes que algo tiene que cambiar, pero no por dónde.</p>
+        </li>
+      </ul>
+
+      <p class="bridge reveal">No estás exagerando.<br><em>Se puede trabajar.</em></p>
+
+      <div class="center reveal">
+        <a class="btn btn--primary js-cta" href="#formulario" data-cta="empatia">
+          Quiero sentirme mejor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section class="section steps-section" aria-labelledby="pasos-titulo">
+    <div class="wrap">
+      <h2 class="h2 center reveal" id="pasos-titulo">Así de sencillo</h2>
+
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step__badge" aria-hidden="true">1</span>
+          <figure class="step__media">
+            <img src="/assets/paso-1.webp" width="860" height="645" loading="lazy" decoding="async"
+                 alt="Escritorio con un portátil y luz cálida">
+          </figure>
+          <div class="step__body">
+            <h3 class="step__title">Reservas</h3>
+            <p class="step__text">Rellenas el formulario. Te escribimos en menos de 24&nbsp;h.</p>
+          </div>
+        </li>
+
+        <li class="step reveal">
+          <span class="step__badge" aria-hidden="true">2</span>
+          <figure class="step__media step__media--tall">
+            <img src="/assets/paso-2.webp" width="860" height="1147" loading="lazy" decoding="async"
+                 alt="María Trinidad y Lucía Zazo, psicólogas sanitarias de MARAM">
+          </figure>
+          <div class="step__body">
+            <h3 class="step__title">Hablas</h3>
+            <p class="step__text">Videollamada con María&nbsp;Trinidad o Lucía, desde donde estés.</p>
+          </div>
+        </li>
+
+        <li class="step reveal">
+          <span class="step__badge" aria-hidden="true">3</span>
+          <figure class="step__media">
+            <img src="/assets/paso-3.webp" width="860" height="645" loading="lazy" decoding="async"
+                 alt="Sala luminosa y tranquila con un sillón y plantas">
+          </figure>
+          <div class="step__body">
+            <h3 class="step__title">Avanzas</h3>
+            <p class="step__text">A tu ritmo, sin desplazamientos y sin permanencia.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="center reveal">
+        <a class="btn btn--primary js-cta" href="#formulario" data-cta="pasos">
+          Reservar mi primera sesión
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quién te acompaña -->
+  <section class="section section--cream" aria-labelledby="porque-titulo">
+    <div class="wrap">
+      <h2 class="h2 center reveal" id="porque-titulo">Quién te va a acompañar</h2>
+      <p class="section__lead center reveal">Dos psicólogas sanitarias colegiadas. Nadie más.</p>
+
+      <ul class="team">
+        <li class="pro reveal" style="--d:0">
+          <img class="pro__photo" src="/assets/dra-maria-trinidad.webp" width="620" height="775"
+               loading="lazy" decoding="async" alt="Retrato de María Trinidad, psicóloga sanitaria">
+          <div class="pro__info">
+            <h3 class="pro__name">María Trinidad</h3>
+            <p class="pro__role">Psicóloga sanitaria · Nº Col. M-44056</p>
+            <p class="pro__focus">Estrés, autoexigencia y crecimiento personal.</p>
+          </div>
+        </li>
+        <li class="pro reveal" style="--d:1">
+          <img class="pro__photo" src="/assets/dra-lucia-zazo.webp" width="620" height="775"
+               loading="lazy" decoding="async" alt="Retrato de Lucía Zazo, psicóloga sanitaria">
+          <div class="pro__info">
+            <h3 class="pro__name">Lucía Zazo</h3>
+            <p class="pro__role">Psicóloga sanitaria · Nº Col. M-44057</p>
+            <p class="pro__focus">Ansiedad, estado de ánimo y gestión emocional.</p>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="chips">
+        <li class="chip reveal" style="--d:0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" stroke-linejoin="round"/>
+            <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <b>Colegiadas</b><span>Nº de colegiación visible</span>
+        </li>
+        <li class="chip reveal" style="--d:1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <path d="M21 12a8 8 0 1 1-3.2-6.4" stroke-linecap="round"/>
+            <path d="M8.5 13s1.3 2 3.5 2 3.5-2 3.5-2" stroke-linecap="round"/>
+            <path d="M9 9.5h.01M15 9.5h.01" stroke-linecap="round"/>
+          </svg>
+          <b>Sin juicios</b><span>Escucha y respeto a tu ritmo</span>
+        </li>
+        <li class="chip reveal" style="--d:2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="10" rx="2"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke-linecap="round"/>
+          </svg>
+          <b>Confidencial</b><span>Secreto profesional y RGPD</span>
+        </li>
+        <li class="chip reveal" style="--d:3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>
+            <path d="M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/>
+          </svg>
+          <b>100&nbsp;% online</b><span>Desde donde tú quieras</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Reseñas de Google -->
+  <section class="section section--quotes" aria-labelledby="testimonios-titulo">
+    <div class="wrap">
+      <h2 class="h2 center reveal" id="testimonios-titulo">Lo que cuentan quienes ya confiaron</h2>
+
+      <div class="rating reveal">
+        <span class="rating__score">5,0</span>
+        <span class="stars stars--lg" role="img" aria-label="5 de 5 estrellas">
+          <svg aria-hidden="true"><use href="#i-star"/></svg>
+          <svg aria-hidden="true"><use href="#i-star"/></svg>
+          <svg aria-hidden="true"><use href="#i-star"/></svg>
+          <svg aria-hidden="true"><use href="#i-star"/></svg>
+          <svg aria-hidden="true"><use href="#i-star"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Para añadir una reseña, copia un <li class="quote"> más aquí dentro. -->
+    <div class="marquee" id="marquee">
+      <ul class="marquee__track" id="marquee-track">
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Conocer a las psicólogas de MARAM ha sido un acierto total. Son dos profesionales excelentes, muy cercanas y con una formación sanitaria que te da mucha seguridad desde el primer momento. La terapia online es super cómoda y me ha ayudado muchísimo con mi gestión emocional.</p>
+          <p class="quote__author">Aleksandar A.<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">¡Súper recomendadas! El equipo de MARAM es increíble. Te hacen sentir en confianza desde el minuto uno y se nota que saben lo que hacen. Un espacio seguro y muy profesional.</p>
+          <p class="quote__author">teeo_18<span>Local Guide en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Quiero agradecer a MARAM Psicología y especialmente a Lucía Zazo su gran profesionalidad y cercanía. Tiene una gran capacidad para escuchar sin juzgar, hacer las preguntas adecuadas y ayudarte a entender mejor tus emociones.</p>
+          <p class="quote__author">Jose Prieto<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Cercanas, divertidas, profesionales… te cuidan, te entienden y hacen que un proceso que a veces es duro sea mucho más fácil. En mi proceso de terapia me he sentido escuchada, acompañada y entendida como nunca antes.</p>
+          <p class="quote__author">Judith Rois<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Mi experiencia con MARAM y, en particular, con la psicóloga Lucía Zazo ha sido inmejorable. Te proporciona herramientas para gestionar tus problemas en el día a día, y te acompaña y guía en cada paso.</p>
+          <p class="quote__author">María A.<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Dar el paso de empezar terapia no siempre es fácil, y encontrar la clínica adecuada puede ser complicado. En mi caso, MARAM Psicología ha sido todo un acierto.</p>
+          <p class="quote__author">Paula García<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Llevaba una temporada con mucha ansiedad en la que me sentía desbordada. Fue entonces cuando una amiga me recomendó hacer terapia y conocí a Lucía. Con ella me sentí escuchada y comprendida desde el primer momento.</p>
+          <p class="quote__author">Natalia Álvarez<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">He tenido una experiencia muy positiva en MARAM Psicología con Lucía Zazo. Desde el primer momento transmite mucha cercanía, profesionalidad y confianza. Las sesiones me han ayudado a entender mejor mis emociones y a ver las situaciones desde otra perspectiva.</p>
+          <p class="quote__author">Mario Giménez<span>Reseña en Google</span></p>
+        </li>
+        <li class="quote">
+          <span class="stars" aria-hidden="true"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+          <p class="quote__text">Hacer terapia con Lucía ha sido un viaje increíble. Al principio iba con miedo de hacerlo online, pero ella siempre me puso facilidades e hizo que el proceso se me hiciese incluso más cómodo que presencial.</p>
+          <p class="quote__author">Maria M.<span>Reseña en Google</span></p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="wrap center reveal">
+      <a class="btn btn--primary js-cta" href="#formulario" data-cta="testimonios">
+        Quiero empezar mi proceso
+      </a>
+    </div>
+  </section>
+
+  <!-- Dudas frecuentes -->
+  <section class="section section--cream" aria-labelledby="faq-titulo">
+    <div class="wrap wrap--narrow">
+      <h2 class="h2 center reveal" id="faq-titulo">Lo que suele frenar a la gente</h2>
+
+      <div class="faq">
+        <details class="qa reveal" style="--d:0">
+          <summary>No sé por dónde empezar ni qué contar.</summary>
+          <p>No hace falta que lo lleves preparado. La primera sesión sirve justo
+             para eso: ordenar contigo lo que te está pasando.</p>
+        </details>
+        <details class="qa reveal" style="--d:1">
+          <summary>¿La terapia online funciona igual?</summary>
+          <p>Sí. Los estudios la sitúan al nivel de la presencial en la mayoría de
+             motivos de consulta, y mucha gente se abre antes desde su propio espacio.</p>
+        </details>
+        <details class="qa reveal" style="--d:2">
+          <summary>¿Hay permanencia o bonos cerrados?</summary>
+          <p>No. Decides sesión a sesión. La frecuencia la acordáis según tu momento
+             y puedes parar cuando quieras.</p>
+        </details>
+        <details class="qa reveal" style="--d:3">
+          <summary>¿Y si no conecto con mi psicóloga?</summary>
+          <p>Puedes cambiar sin dar explicaciones. Lo importante es que encajes con
+             quien te acompaña: de eso depende buena parte del proceso.</p>
+        </details>
+        <details class="qa reveal" style="--d:4">
+          <summary>¿Qué necesito para la videollamada?</summary>
+          <p>Un móvil u ordenador con cámara y un rato tranquilo. Te enviamos el
+             enlace y no tienes que instalar nada.</p>
+        </details>
+        <details class="qa reveal" style="--d:5">
+          <summary>¿Es realmente confidencial?</summary>
+          <p>Sí. Nos ampara el secreto profesional del código deontológico y tus
+             datos se tratan conforme al RGPD.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final y formulario -->
+  <section class="section section--dark" id="formulario" aria-labelledby="form-titulo">
+    <div class="wrap wrap--narrow">
+      <h2 class="h2 h2--light center reveal" id="form-titulo">
+        Lo difícil es dar el primer paso.<br>Y ya lo estás dando.
+      </h2>
+      <p class="section__lead section__lead--light center reveal">
+        Te contactamos en menos de 24&nbsp;horas. Sin compromiso.
+      </p>
+
+      <div class="formcard reveal">
+
+        <!-- Formulario multi-paso -->
+        <form class="mstep" id="lead-form" novalidate>
+
+          <!-- Campo trampa anti-spam -->
+          <div class="hp" aria-hidden="true">
+            <label for="web">No rellenes este campo</label>
+            <input type="text" id="web" name="web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="progress" role="group" aria-label="Progreso del formulario">
+            <div class="progress__bar"><span class="progress__fill" id="progress-fill"></span></div>
+            <ol class="progress__dots" id="progress-dots">
+              <li class="dot is-active" data-step="1"><span class="sr-only">Paso 1: Nombre</span></li>
+              <li class="dot" data-step="2"><span class="sr-only">Paso 2: Teléfono</span></li>
+              <li class="dot" data-step="3"><span class="sr-only">Paso 3: Motivo</span></li>
+            </ol>
+            <p class="progress__label" id="progress-label" aria-live="polite">Paso 1 de 3</p>
+          </div>
+
+          <!-- Paso 1 -->
+          <fieldset class="panel is-current" data-step="1">
+            <legend class="panel__q"><label for="nombre">¿Cómo te llamas?</label></legend>
+            <p class="panel__help" id="nombre-help">Solo el nombre, para saber cómo dirigirnos a ti.</p>
+            <input class="field" type="text" id="nombre" name="nombre" autocomplete="given-name"
+                   enterkeyhint="next" maxlength="60" placeholder="Tu nombre"
+                   aria-describedby="nombre-help nombre-error" required>
+            <p class="field__error" id="nombre-error" role="alert"></p>
+            <div class="panel__nav">
+              <button class="btn btn--primary btn--block js-next" type="button">Continuar</button>
+            </div>
+          </fieldset>
+
+          <!-- Paso 2 -->
+          <fieldset class="panel" data-step="2" hidden>
+            <legend class="panel__q"><label for="telefono">¿A qué teléfono te escribimos?</label></legend>
+            <p class="panel__help" id="telefono-help">
+              Te contactamos por WhatsApp o llamada, de Lun&nbsp;a&nbsp;Vie de 9:00 a 20:00.
+            </p>
+            <div class="field-phone">
+              <span class="field-phone__prefix" aria-hidden="true">+34</span>
+              <input class="field field--phone" type="tel" id="telefono" name="telefono"
+                     autocomplete="tel-national" inputmode="numeric" enterkeyhint="next"
+                     maxlength="11" placeholder="612 345 678"
+                     aria-describedby="telefono-help telefono-error" required>
+            </div>
+            <p class="field__error" id="telefono-error" role="alert"></p>
+            <div class="panel__nav">
+              <button class="btn btn--ghost js-back" type="button">Atrás</button>
+              <button class="btn btn--primary js-next" type="button">Continuar</button>
+            </div>
+          </fieldset>
+
+          <!-- Paso 3 -->
+          <fieldset class="panel" data-step="3" hidden>
+            <legend class="panel__q"><label for="motivo">¿Qué te está pasando ahora mismo?</label></legend>
+            <p class="panel__help" id="motivo-help">
+              No hace falta que lo tengas claro. Unas líneas nos ayudan a asignarte
+              la psicóloga que mejor encaja contigo.
+            </p>
+            <textarea class="field field--area" id="motivo" name="motivo" rows="4" maxlength="500"
+                      enterkeyhint="send" placeholder="Cuéntanos brevemente qué te gustaría trabajar…"
+                      aria-describedby="motivo-help"></textarea>
+            <div class="panel__nav">
+              <button class="btn btn--ghost js-back" type="button">Atrás</button>
+              <button class="btn btn--primary js-submit" type="submit">Enviar y reservar</button>
+            </div>
+            <p class="legal">
+              Al enviar aceptas el tratamiento de tus datos para contactarte, según la
+              <button class="linkish js-modal" type="button" data-modal="modal-privacidad">política de privacidad</button>.
+              Confidencialidad garantizada.
+            </p>
+          </fieldset>
+
+        </form>
+
+        <!-- Pantalla de agradecimiento -->
+        <div class="thanks" id="thanks" hidden tabindex="-1" role="status" aria-live="polite">
+          <span class="thanks__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path>
+            </svg>
+          </span>
+          <h3 class="thanks__title">Gracias, <span id="thanks-name">gracias</span>.</h3>
+          <p class="thanks__text">
+            <strong>Te contactamos en menos de 24&nbsp;horas</strong> (Lun&nbsp;a&nbsp;Vie, 9:00–20:00)
+            para proponerte horario.
+          </p>
+          <p class="thanks__text thanks__text--muted">¿Prefieres que hablemos ya?</p>
+          <a class="btn btn--whatsapp btn--block js-wa" id="wa-thanks" href="#" target="_blank" rel="noopener"
+             data-wa="gracias">
+            <svg class="btn__ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.21-8.24 8.21zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.53.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"></path>
+            </svg>
+            Hablar por WhatsApp
+          </a>
+        </div>
+
+        <!-- Alternativa secundaria, siempre visible -->
+        <p class="alt-wa">
+          ¿Prefieres escribirnos directamente?
+          <a class="alt-wa__link js-wa" id="wa-alt" href="#" target="_blank" rel="noopener" data-wa="alternativa">
+            Escríbenos por WhatsApp
+          </a>
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap wrap--narrow footer__inner">
+    <img class="footer__logo" src="/assets/logo-maram.webp" width="351" height="96"
+         alt="MARAM Psicología" loading="lazy" decoding="async">
+
+    <ul class="footer__data">
+      <li><a href="tel:+34698994566">+34 698 994 566</a> · Lun a Vie, 9:00–20:00</li>
+      <li><a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a></li>
+      <li>María Trinidad — Psicóloga sanitaria, Nº Col. M-44056</li>
+      <li>Lucía Zazo — Psicóloga sanitaria, Nº Col. M-44057</li>
+    </ul>
+
+    <p class="footer__legal">
+      Tus datos se tratan únicamente para gestionar tu solicitud de cita y nunca se ceden
+      a terceros. Responsable: MARAM Psicología Clínica.
+    </p>
+
+    <ul class="footer__links">
+      <li><button class="linkish js-modal" type="button" data-modal="modal-aviso">Aviso legal</button></li>
+      <li><button class="linkish js-modal" type="button" data-modal="modal-privacidad">Privacidad</button></li>
+      <li><button class="linkish js-modal" type="button" data-modal="modal-cookies">Cookies</button></li>
+      <li><button class="linkish js-cookie-settings" type="button">Configurar cookies</button></li>
+    </ul>
+
+    <p class="footer__copy">© <span id="year">2026</span> MARAM Psicología Clínica</p>
+  </div>
+</footer>
+
+<!-- Elementos fijos -->
+
+<a class="wa-float js-wa" id="wa-float" href="#" target="_blank" rel="noopener" data-wa="burbuja"
+   aria-label="Escribirnos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.21-8.24 8.21zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.53.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"></path>
+  </svg>
+</a>
+
+<div class="stickybar" id="stickybar" hidden>
+  <a class="btn btn--primary stickybar__cta js-cta" href="#formulario" data-cta="barra-movil">
+    Reservar mi sesión
+  </a>
+  <a class="btn btn--whatsapp stickybar__wa js-wa" href="#" target="_blank" rel="noopener"
+     data-wa="barra-movil" aria-label="Escribirnos por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 8.24 8.24c0 4.54-3.7 8.21-8.24 8.21zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.53.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"></path>
+    </svg>
+  </a>
+</div>
+
+<!-- Banner de cookies -->
+<div class="cookiebar" id="cookiebar" role="dialog" aria-modal="false"
+     aria-labelledby="cookiebar-title" hidden>
+  <div class="cookiebar__inner">
+    <div>
+      <p class="cookiebar__title" id="cookiebar-title">Cookies en esta página</p>
+      <p class="cookiebar__text">
+        Usamos cookies técnicas y, solo si las aceptas, cookies de medición del Píxel
+        de Meta para saber si nuestros anuncios funcionan.
+        <button class="linkish js-modal" type="button" data-modal="modal-cookies">Más información</button>.
+      </p>
+    </div>
+    <div class="cookiebar__actions">
+      <button class="btn btn--ghost btn--sm" type="button" id="cookie-reject">Solo necesarias</button>
+      <button class="btn btn--primary btn--sm" type="button" id="cookie-accept">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ventanas legales -->
+
+<dialog class="modal" id="modal-aviso" aria-labelledby="aviso-titulo">
+  <div class="modal__head">
+    <h2 class="modal__title" id="aviso-titulo">Aviso legal</h2>
+    <button class="modal__close js-modal-close" type="button" aria-label="Cerrar">&times;</button>
+  </div>
+  <div class="modal__body">
+    <h3>1. Titular del sitio</h3>
+    <p>Este sitio web es titularidad de <strong>MARAM Psicología Clínica</strong>
+      (en adelante, «MARAM»), centro de psicología sanitaria que presta servicios de
+      terapia online en España.</p>
+    <ul>
+      <li>Email: <a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a></li>
+      <li>Teléfono: +34 698 994 566</li>
+      <li>Sitio de campaña: vsl.marampsicologia.com</li>
+      <!-- PENDIENTE: razón social, NIF, domicilio y registro sanitario. Ver README. -->
+    </ul>
+
+    <h3>2. Profesionales responsables</h3>
+    <p>Los servicios son prestados por psicólogas sanitarias colegiadas:</p>
+    <ul>
+      <li>María Trinidad — Psicóloga sanitaria, Nº Col. M-44056</li>
+      <li>Lucía Zazo — Psicóloga sanitaria, Nº Col. M-44057</li>
+    </ul>
+    <p>Ambas ejercen conforme al Código Deontológico del Consejo General de la
+      Psicología de España, incluido el deber de secreto profesional.</p>
+
+    <h3>3. Objeto del sitio</h3>
+    <p>Esta página tiene una finalidad exclusivamente informativa y de solicitud de
+      cita. No constituye asesoramiento psicológico ni diagnóstico, y no sustituye a
+      una consulta profesional. <strong>Si estás en una situación de urgencia o riesgo
+      para tu vida, llama al 112 o al 024 (línea de atención a la conducta suicida).</strong></p>
+
+    <h3>4. Condiciones de uso</h3>
+    <p>El acceso al sitio es gratuito y su uso implica la aceptación de este aviso
+      legal. Quien lo use se compromete a hacerlo de forma lícita y a facilitar datos
+      veraces en el formulario de contacto.</p>
+
+    <h3>5. Propiedad intelectual</h3>
+    <p>Los textos, imágenes, logotipo y demás elementos del sitio pertenecen a MARAM o
+      se utilizan con autorización. No se permite su reproducción sin consentimiento
+      previo por escrito.</p>
+
+    <h3>6. Responsabilidad</h3>
+    <p>MARAM no se responsabiliza de interrupciones del servicio, errores técnicos ni
+      del uso que se haga de la información publicada. Se reserva el derecho a
+      modificar los contenidos sin previo aviso.</p>
+
+    <h3>7. Legislación aplicable</h3>
+    <p>Este aviso se rige por la legislación española, en particular el Reglamento
+      (UE) 2016/679 (RGPD), la Ley Orgánica 3/2018 (LOPDGDD) y la Ley 34/2002 (LSSI-CE).</p>
+  </div>
+</dialog>
+
+<dialog class="modal" id="modal-privacidad" aria-labelledby="privacidad-titulo">
+  <div class="modal__head">
+    <h2 class="modal__title" id="privacidad-titulo">Política de privacidad</h2>
+    <button class="modal__close js-modal-close" type="button" aria-label="Cerrar">&times;</button>
+  </div>
+  <div class="modal__body">
+    <h3>1. Responsable del tratamiento</h3>
+    <p>MARAM Psicología Clínica es responsable del tratamiento de los datos personales
+      que nos facilites a través de esta web.</p>
+    <ul>
+      <li>Email: <a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a></li>
+      <li>Teléfono: +34 698 994 566</li>
+    </ul>
+
+    <h3>2. Qué datos recogemos</h3>
+    <p>Únicamente los que escribes en el formulario: <strong>nombre, teléfono</strong> y,
+      si quieres contárnoslo, el <strong>motivo de consulta</strong>. No pedimos datos
+      bancarios ni documentos identificativos en esta página.</p>
+    <p>El motivo de consulta puede revelar datos de salud. Por eso se trata con especial
+      cuidado, solo lo ven las psicólogas del centro y se conserva el tiempo
+      imprescindible.</p>
+
+    <h3>3. Para qué los usamos</h3>
+    <ul>
+      <li>Gestionar tu solicitud de cita y contactarte por teléfono, WhatsApp o email.</li>
+      <li>Prestar los servicios de psicología que contrates.</li>
+      <li>Asignarte la psicóloga que mejor encaje con lo que nos cuentas.</li>
+    </ul>
+    <p>No usamos tus datos para enviarte publicidad ni los cedemos a terceros con
+      fines comerciales.</p>
+
+    <h3>4. Legitimación</h3>
+    <ul>
+      <li>Tu consentimiento al enviar el formulario.</li>
+      <li>La ejecución del contrato de servicios profesionales, si inicias terapia.</li>
+      <li>El cumplimiento de las obligaciones legales aplicables a un centro sanitario.</li>
+    </ul>
+
+    <h3>5. Conservación</h3>
+    <p>Si no llegas a iniciar terapia, tus datos de contacto se eliminan como máximo
+      en un año. Si inicias un proceso, se conservan mientras dure la relación
+      profesional y durante los plazos que exige la normativa sanitaria.</p>
+
+    <h3>6. Destinatarios y encargados</h3>
+    <p>No cedemos tus datos, salvo obligación legal. Para funcionar, el sitio se apoya
+      en proveedores que actúan como encargados del tratamiento y cumplen el RGPD:
+      alojamiento y funciones de servidor (Vercel Inc.), envío del aviso de tu
+      solicitud por email (Resend) y, si has aceptado cookies de medición, Meta
+      Platforms Ireland Ltd. para medir la eficacia de los anuncios.</p>
+    <p>Algunos de estos proveedores pueden tratar datos fuera del Espacio Económico
+      Europeo, amparados por las cláusulas contractuales tipo de la Comisión Europea.</p>
+
+    <h3>7. Tus derechos</h3>
+    <p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición,
+      limitación del tratamiento y portabilidad escribiendo a
+      <a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a>,
+      indicando tu nombre y el derecho que deseas ejercer. También puedes reclamar
+      ante la Agencia Española de Protección de Datos (aepd.es).</p>
+
+    <h3>8. Seguridad</h3>
+    <p>Adoptamos las medidas técnicas y organizativas necesarias para garantizar la
+      seguridad y confidencialidad de tus datos, evitando su alteración, pérdida o
+      acceso no autorizado. Las comunicaciones con esta web viajan cifradas (HTTPS).</p>
+
+    <h3>9. Actualización</h3>
+    <p>Esta política puede actualizarse periódicamente. Última actualización:
+      septiembre de 2026.</p>
+  </div>
+</dialog>
+
+<dialog class="modal" id="modal-cookies" aria-labelledby="cookies-titulo">
+  <div class="modal__head">
+    <h2 class="modal__title" id="cookies-titulo">Política de cookies</h2>
+    <button class="modal__close js-modal-close" type="button" aria-label="Cerrar">&times;</button>
+  </div>
+  <div class="modal__body">
+    <h3>¿Qué son las cookies?</h3>
+    <p>Son pequeños archivos que se guardan en tu dispositivo al visitar una web.
+      Permiten recordar tus preferencias y, en algunos casos, medir cómo se usa la página.</p>
+
+    <h3>Cuáles usa esta página</h3>
+    <p><strong>Técnicas (necesarias).</strong> Imprescindibles para que la web funcione.
+      No requieren tu consentimiento.</p>
+    <ul>
+      <li><code>maram_cookie_consent</code> — guarda tu decisión sobre las cookies.
+        Duración: 6 meses.</li>
+      <li><code>maram-intro</code> — recuerda que ya has visto la animación de entrada,
+        para no repetirla. Se borra al cerrar el navegador.</li>
+    </ul>
+
+    <p><strong>De medición y publicidad.</strong> Solo se activan si pulsas
+      «Aceptar todas».</p>
+    <ul>
+      <li><strong>Píxel de Meta</strong> (Meta Platforms Ireland Ltd.) — mide cuántas
+        personas llegan desde nuestros anuncios de Instagram y Facebook y cuántas
+        solicitan cita, para no gastar el presupuesto en anuncios que no ayudan a
+        nadie. Cookies <code>_fbp</code> y <code>_fbc</code>. Duración: hasta 90 días.</li>
+    </ul>
+
+    <h3>Cómo cambiar tu decisión</h3>
+    <p>Puedes cambiarla cuando quieras desde «Configurar cookies», al final de la
+      página. También puedes borrar o bloquear cookies desde la configuración de tu
+      navegador; al volver a entrar, te preguntaremos de nuevo.</p>
+    <p>Si rechazas las cookies de medición, la página funciona exactamente igual:
+      puedes reservar sesión y escribirnos por WhatsApp sin ninguna limitación.</p>
+
+    <h3>Contacto</h3>
+    <p>Cualquier duda sobre esta política, escríbenos a
+      <a href="mailto:maram@marampsicologia.com">maram@marampsicologia.com</a>.</p>
+  </div>
+  <div class="modal__foot">
+    <button class="btn btn--ghost btn--sm js-cookie-reject" type="button">Solo necesarias</button>
+    <button class="btn btn--primary btn--sm js-cookie-accept" type="button">Aceptar todas</button>
+  </div>
+</dialog>
+
+<!--JS-->
+</body>
+</html>

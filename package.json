@@ -1,0 +1,15 @@
+{
+  "name": "maram-landing-reserva",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Landing de captación para MARAM Psicología (vsl.marampsicologia.com)",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "vercel dev",
+    "preview": "npm run build && npx --yes serve dist -l 3000"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
